@@ -1,0 +1,21 @@
+name: M4 Team Project Mocha Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      render_url:
+        description: 'Your Render API URL'
+        required: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull Docker Image
+        run: |
+          docker pull <your-dockerhub-username>/api-test-suite:latest
+
+      - name: Run Mocha Tests with Your Render API URL
+        run: |
+          docker run -e API_URL=${{ github.event.inputs.student_url }} <your-dockerhub-username>/api-test-suite:latest
