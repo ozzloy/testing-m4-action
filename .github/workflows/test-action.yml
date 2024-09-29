@@ -14,8 +14,8 @@ jobs:
     steps:
       - name: Pull Docker Image
         run: |
-          docker pull <your-dockerhub-username>/api-test-suite:latest
+          docker pull wduffy/m4-tests:latest
 
       - name: Run Mocha Tests with Your Render API URL
         run: |
-          docker run -e API_URL=${{ github.event.inputs.student_url }} <your-dockerhub-username>/api-test-suite:latest
+          docker run -e API_URL=${{ github.event.inputs.student_url }} wduffy/m4-tests:latest
