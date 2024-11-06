@@ -26,7 +26,9 @@ describe("\nSign Up a User", function () {
     userObj = createUniqueUser();
     userObj2 = createUniqueUser();
     [agent, agent2, agent3, agent4] = createManyAgents(apiBaseUrl, 4);
-    [xsrfToken, xsrfToken2, xsrfToken3, xsrfToken4] = await fetchManyCsrfTokens([agent, agent2, agent3, agent4]);
+    [xsrfToken, xsrfToken2, xsrfToken3, xsrfToken4] = await fetchManyCsrfTokens(
+      [agent, agent2, agent3, agent4],
+    );
   });
 
   describe("POST /api/users", function () {
@@ -77,12 +79,12 @@ describe("\nSign Up a User", function () {
             assert.strictEqual(
               res.body.user[field],
               expected[field].value,
-              `${field} does not match`
+              `${field} does not match`,
             );
             assert.strictEqual(
               typeof res.body.user[field],
               expected[field].type,
-              `Type of ${field} not as expected`
+              `Type of ${field} not as expected`,
             );
           });
           assert.strictEqual(typeof res.body.user.id, "number");
@@ -90,7 +92,7 @@ describe("\nSign Up a User", function () {
         });
     });
   });
-  
+
   describe("Error response: User already exists with the specified email or username", function () {
     it("Status Code - 500", function (done) {
       let userClone = { ...userObj };
@@ -141,7 +143,7 @@ describe("\nSign Up a User", function () {
           assert.strictEqual(
             typeof res.body.errors.username,
             "string",
-            "missing key [username]"
+            "missing key [username]",
           );
 
           done();
@@ -180,7 +182,7 @@ describe("\nSign Up a User", function () {
           expect(Object.keys(res.body.errors)).to.include(
             "username",
             "email",
-            "lastName"
+            "lastName",
           );
           done();
         });

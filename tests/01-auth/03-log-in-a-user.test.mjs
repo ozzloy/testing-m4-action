@@ -15,7 +15,6 @@ describe("\nLog In a User", function () {
     xsrfToken = await fetchCsrfToken(agent);
     let res = await agentSignUp(agent, xsrfToken);
     agentDetails = res.body.user;
-
   });
 
   describe("POST /api/session", function () {
@@ -74,12 +73,12 @@ describe("\nLog In a User", function () {
             assert.strictEqual(
               res.body.user[field],
               expected[field].value,
-              `${field} does not match`
+              `${field} does not match`,
             );
             assert.strictEqual(
               typeof res.body.user[field],
               expected[field].type,
-              `Type of ${field} not as expected`
+              `Type of ${field} not as expected`,
             );
           });
           assert.strictEqual(typeof res.body.user.id, "number");

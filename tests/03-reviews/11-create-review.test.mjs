@@ -6,17 +6,25 @@ import {
   createManyAgents,
   fetchManyCsrfTokens,
   createAgent,
-  fetchCsrfToken
+  fetchCsrfToken,
 } from "../utils/agent-factory.mjs";
 
 describe("\nCreate a Review for a Spot based on the Spot's id", function () {
-  let agent, xsrfToken, agentSpot,
-    agent2, xsrfToken2,
-    agent3, xsrfToken3,
-    agent4, xsrfToken4,
-    agent5, xsrfToken5,
-    agent6, xsrfToken6,
-    agent7, xsrfToken7;
+  let agent,
+    xsrfToken,
+    agentSpot,
+    agent2,
+    xsrfToken2,
+    agent3,
+    xsrfToken3,
+    agent4,
+    xsrfToken4,
+    agent5,
+    xsrfToken5,
+    agent6,
+    xsrfToken6,
+    agent7,
+    xsrfToken7;
 
   before(async function () {
     this.timeout(15000);
@@ -24,9 +32,12 @@ describe("\nCreate a Review for a Spot based on the Spot's id", function () {
     [agent, agent2, agent3, agent4, agent5, agent6] = agentArr;
 
     let xsrfTokens = await fetchManyCsrfTokens(agentArr);
-    [xsrfToken, xsrfToken2, xsrfToken3, xsrfToken4, xsrfToken5, xsrfToken6] = xsrfTokens;
+    [xsrfToken, xsrfToken2, xsrfToken3, xsrfToken4, xsrfToken5, xsrfToken6] =
+      xsrfTokens;
 
-    await Promise.all(agentArr.map((el, idx) => agentSignUp(el, xsrfTokens[idx])));
+    await Promise.all(
+      agentArr.map((el, idx) => agentSignUp(el, xsrfTokens[idx])),
+    );
     agent7 = createAgent(apiBaseUrl);
     xsrfToken7 = await fetchCsrfToken(agent7);
 
@@ -66,8 +77,7 @@ describe("\nCreate a Review for a Spot based on the Spot's id", function () {
           if (err) return done(err);
           done();
         });
-    })
-
+    });
   });
 
   describe("Response", function () {
@@ -109,17 +119,14 @@ describe("\nCreate a Review for a Spot based on the Spot's id", function () {
             "review",
             "stars",
             "createdAt",
-            "updatedAt"
+            "updatedAt",
           );
           expect(res.body.review).to.equal(reviewData.review);
           expect(res.body.stars).to.equal(reviewData.stars);
           done();
         });
-
     });
-
   });
-
 
   describe("Error Response: Body validation errors", function () {
     it("Status Code - 400", function (done) {
@@ -137,8 +144,7 @@ describe("\nCreate a Review for a Spot based on the Spot's id", function () {
         .expect(400)
         .end(function (err, res) {
           expect(err).to.not.exist;
-          expect(res.body)
-            .to.have.property("message")
+          expect(res.body).to.have.property("message");
           expect(res.body.errors).to.include.keys("review", "stars");
           done();
         });
@@ -157,16 +163,12 @@ describe("\nCreate a Review for a Spot based on the Spot's id", function () {
         .expect("Content-Type", /json/)
         .end(function (err, res) {
           expect(err).to.not.exist;
-          expect(res.body)
-            .to.have.property("message")
+          expect(res.body).to.have.property("message");
           expect(res.body.errors).to.include.keys("review", "stars");
           done();
         });
     });
-
   });
-
-
 
   describe("Error Response: Couldn't find a Spot with the specified id", function () {
     it("Status Code - 404", function (done) {
@@ -179,7 +181,10 @@ describe("\nCreate a Review for a Spot based on the Spot's id", function () {
         .expect(404)
         .end(function (err, res) {
           expect(err).to.not.exist;
-          expect(res.body).to.have.property("message", "Spot couldn't be found");
+          expect(res.body).to.have.property(
+            "message",
+            "Spot couldn't be found",
+          );
           done();
         });
     });
@@ -193,15 +198,16 @@ describe("\nCreate a Review for a Spot based on the Spot's id", function () {
         .expect("Content-Type", /json/)
         .end(function (err, res) {
           expect(err).to.not.exist;
-          expect(res.body).to.have.property("message", "Spot couldn't be found");
+          expect(res.body).to.have.property(
+            "message",
+            "Spot couldn't be found",
+          );
           done();
         });
     });
   });
 
-
   describe("Error Response: Review from the current user already exists for the Spot", function () {
-
     it("Status Code - 500", function (done) {
       const reviewData = {
         review: "This was an awesome spot for testing reviews!",
@@ -218,7 +224,7 @@ describe("\nCreate a Review for a Spot based on the Spot's id", function () {
           expect(err).to.not.exist;
           expect(res.body).to.have.property(
             "message",
-            "User already has a review for this spot"
+            "User already has a review for this spot",
           );
           done();
         });
@@ -239,12 +245,10 @@ describe("\nCreate a Review for a Spot based on the Spot's id", function () {
           expect(err).to.not.exist;
           expect(res.body).to.have.property(
             "message",
-            "User already has a review for this spot"
+            "User already has a review for this spot",
           );
           done();
         });
     });
-
   });
-
-})
+});

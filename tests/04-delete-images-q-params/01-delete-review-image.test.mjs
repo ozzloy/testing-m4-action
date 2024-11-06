@@ -8,7 +8,7 @@ import {
   createManyAgents,
   fetchManyCsrfTokens,
   createAgent,
-  fetchCsrfToken
+  fetchCsrfToken,
 } from "../utils/agent-factory.mjs";
 
 describe("\nDelete a Review Image", function () {
@@ -31,13 +31,12 @@ describe("\nDelete a Review Image", function () {
     let agentArr = createManyAgents(apiBaseUrl, 3);
     [agent, agent2, agent3] = agentArr;
 
-
     let xsrfTokens = await fetchManyCsrfTokens(agentArr);
-    [xsrfToken, xsrfToken2, xsrfToken3] = xsrfTokens
+    [xsrfToken, xsrfToken2, xsrfToken3] = xsrfTokens;
 
-
-
-    await Promise.all(agentArr.map((el, idx) => agentSignUp(el, xsrfTokens[idx])));
+    await Promise.all(
+      agentArr.map((el, idx) => agentSignUp(el, xsrfTokens[idx])),
+    );
 
     let spotRes = await agentCreateSpot(agent, xsrfToken);
     agentSpot = spotRes.body;
@@ -48,7 +47,7 @@ describe("\nDelete a Review Image", function () {
     let reviewImageRes = await agentCreateReviewImage(
       agent2,
       xsrfToken2,
-      agent2Review.id
+      agent2Review.id,
     );
 
     reviewImage = reviewImageRes.body;
@@ -59,7 +58,7 @@ describe("\nDelete a Review Image", function () {
     let reviewImageRes3 = await agentCreateReviewImage(
       agent3,
       xsrfToken3,
-      agent3Review3.id
+      agent3Review3.id,
     );
     reviewImage3 = reviewImageRes3.body;
 
@@ -79,7 +78,6 @@ describe("\nDelete a Review Image", function () {
         });
     });
 
-
     it("Authentication", function (done) {
       agent4
         .delete(`/review-images/${reviewImage.id}`)
@@ -92,7 +90,6 @@ describe("\nDelete a Review Image", function () {
         });
     });
 
-
     it("Authorization", function (done) {
       agent2
         .delete(`/review-images/${reviewImage3.id}`)
@@ -104,7 +101,7 @@ describe("\nDelete a Review Image", function () {
           done();
         });
     });
-  })
+  });
 
   describe("Response", function () {
     it("Status Code - 200", function (done) {
@@ -119,7 +116,6 @@ describe("\nDelete a Review Image", function () {
         });
     });
 
-
     it("Body Matches API Docs", function (done) {
       agent3
         .delete(`/review-images/${reviewImage3.id}`)
@@ -132,7 +128,7 @@ describe("\nDelete a Review Image", function () {
           done();
         });
     });
-  })
+  });
 
   describe("Error response: Couldn't find a Review Image with the specified id", function () {
     it("Status Code - 404", function (done) {
@@ -156,12 +152,10 @@ describe("\nDelete a Review Image", function () {
           expect(err).to.not.exist;
           expect(res.body).to.have.property(
             "message",
-            "Review Image couldn't be found"
+            "Review Image couldn't be found",
           );
           done();
         });
     });
-  })
-
-
+  });
 });

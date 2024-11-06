@@ -25,7 +25,11 @@ describe("\nDelete a Spot", function () {
   before(async function () {
     this.timeout(15000);
     [agent, agent2, agentNonAuth] = createManyAgents(apiBaseUrl, 3);
-    [xsrfToken, xsrfToken2, xsrfToken3] = await fetchManyCsrfTokens([agent, agent2, agentNonAuth]);
+    [xsrfToken, xsrfToken2, xsrfToken3] = await fetchManyCsrfTokens([
+      agent,
+      agent2,
+      agentNonAuth,
+    ]);
     await agentSignUp(agent, xsrfToken);
     await agentSignUp(agent2, xsrfToken2);
 
@@ -44,7 +48,6 @@ describe("\nDelete a Spot", function () {
 
     let res2 = await agentCreateSpot(agent, xsrfToken, agentSpot.id);
     agent2Spot = res2.body;
-
   });
 
   describe("DELETE /api/spots/:spotId", function () {
@@ -67,7 +70,7 @@ describe("\nDelete a Spot", function () {
         .set("X-XSRF-TOKEN", xsrfToken3)
         .expect(401)
         .end(function (err, res) {
-          if(err) return done(err);
+          if (err) return done(err);
           done();
         });
     });
@@ -79,8 +82,8 @@ describe("\nDelete a Spot", function () {
         .set("X-XSRF-TOKEN", xsrfToken2)
         .expect(403)
         .end(function (err, res) {
-        if(err) return done(err);
-        done();
+          if (err) return done(err);
+          done();
         });
     });
   });
@@ -140,7 +143,7 @@ describe("\nDelete a Spot", function () {
           expect(err).to.not.exist;
           expect(res.body).to.have.property(
             "message",
-            "Spot couldn't be found"
+            "Spot couldn't be found",
           );
           done();
         });

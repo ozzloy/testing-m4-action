@@ -24,7 +24,11 @@ describe("\nGet all Reviews of the Current User", function () {
   before(async function () {
     this.timeout(15000);
     [agent, agent2, agent3] = createManyAgents(apiBaseUrl, 3);
-    [xsrfToken, xsrfToken2, xsrfToken3] = await fetchManyCsrfTokens([agent, agent2, agent3]);
+    [xsrfToken, xsrfToken2, xsrfToken3] = await fetchManyCsrfTokens([
+      agent,
+      agent2,
+      agent3,
+    ]);
 
     await agentSignUp(agent, xsrfToken);
     let res = await agentCreateSpot(agent, xsrfToken);
@@ -44,7 +48,7 @@ describe("\nGet all Reviews of the Current User", function () {
         expect(err).to.not.exist;
         done();
       });
-    })
+    });
 
     it("Authentication", function (done) {
       agent3
@@ -55,7 +59,7 @@ describe("\nGet all Reviews of the Current User", function () {
           if (err) return done(err);
           done();
         });
-    })
+    });
   });
 
   describe("Response", function () {
@@ -81,7 +85,6 @@ describe("\nGet all Reviews of the Current User", function () {
           expect(res.body).to.be.an("object");
           expect(res.body).to.have.property("Reviews").that.is.an("array");
 
-
           if (res.body.Reviews.length > 0) {
             const review = res.body.Reviews[0];
             expect(review).to.include.keys(
@@ -94,7 +97,7 @@ describe("\nGet all Reviews of the Current User", function () {
               "updatedAt",
               "User",
               "Spot",
-              "ReviewImages"
+              "ReviewImages",
             );
             expect(review.User).to.include.keys("id", "firstName", "lastName");
             expect(review.Spot).to.include.keys(
@@ -108,7 +111,7 @@ describe("\nGet all Reviews of the Current User", function () {
               "lng",
               "name",
               "price",
-              "previewImage"
+              "previewImage",
             );
             expect(review.ReviewImages).to.be.an("array");
           }

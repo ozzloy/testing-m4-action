@@ -7,7 +7,7 @@ import {
   createManyAgents,
   fetchManyCsrfTokens,
   createAgent,
-  fetchCsrfToken
+  fetchCsrfToken,
 } from "../utils/agent-factory.mjs";
 
 describe("\nEdit a Review", function () {
@@ -29,7 +29,9 @@ describe("\nEdit a Review", function () {
 
     let xsrfTokens = await fetchManyCsrfTokens(agentArr);
     [xsrfToken, xsrfToken2, xsrfToken3] = xsrfTokens;
-    await Promise.all(agentArr.map((el, idx) => agentSignUp(el, xsrfTokens[idx])));
+    await Promise.all(
+      agentArr.map((el, idx) => agentSignUp(el, xsrfTokens[idx])),
+    );
 
     agent4 = createAgent(apiBaseUrl);
     xsrfToken4 = await fetchCsrfToken(agent4);
@@ -57,7 +59,7 @@ describe("\nEdit a Review", function () {
           expect(err).to.not.exist;
           done();
         });
-    }); 
+    });
 
     it("Authentication", function (done) {
       const updateData = {
@@ -92,8 +94,8 @@ describe("\nEdit a Review", function () {
           if (err) return done(err);
           done();
         });
-    }); 
-  }); 
+    });
+  });
 
   describe("Response", function () {
     it("Status Code - 200", function (done) {
@@ -112,7 +114,7 @@ describe("\nEdit a Review", function () {
           expect(err).to.not.exist;
           done();
         });
-    }); 
+    });
 
     it("Body Matches API Docs", function (done) {
       const updateData = {
@@ -135,14 +137,14 @@ describe("\nEdit a Review", function () {
             "review",
             "stars",
             "createdAt",
-            "updatedAt"
+            "updatedAt",
           );
           expect(res.body.review).to.equal(updateData.review);
           expect(res.body.stars).to.equal(updateData.stars);
           done();
         });
-    }); 
-  }); 
+    });
+  });
 
   describe("Error Response: Body validation errors", function () {
     it("Status Code - 400", function (done) {
@@ -161,7 +163,7 @@ describe("\nEdit a Review", function () {
           if (err) return done(err);
           done();
         });
-    }); 
+    });
 
     it("Body Matches API Docs", function (done) {
       const invalidData = {
@@ -180,8 +182,8 @@ describe("\nEdit a Review", function () {
           expect(res.body.errors).to.include.keys("review", "stars");
           done();
         });
-    }); 
-  }); 
+    });
+  });
 
   describe("Error response: Couldn't find a Review with the specified id", function () {
     it("Status Code - 404", function (done) {
@@ -200,7 +202,7 @@ describe("\nEdit a Review", function () {
           if (err) return done(err);
           return done();
         });
-    }); 
+    });
 
     it("Body Matches API Docs", function (done) {
       const validData = {
@@ -217,10 +219,10 @@ describe("\nEdit a Review", function () {
           expect(err).to.not.exist;
           expect(res.body).to.have.property(
             "message",
-            "Review couldn't be found"
+            "Review couldn't be found",
           );
           done();
         });
     });
-  }); 
-}); 
+  });
+});

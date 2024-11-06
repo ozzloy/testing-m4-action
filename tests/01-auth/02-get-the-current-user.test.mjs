@@ -8,9 +8,18 @@ import {
 
 describe("\nGet the Current User", function () {
   console.log("\x1b[32m%s\x1b[0m", "\nWelcome to the test suite!", "👋");
-  console.log("\x1b[31m%s\x1b[0m", "\nPlease provide any feedback regarding bugs!", "🐛");
-  console.log("\x1b[32m%s\x1b[0m", "\nRemember to wake up Render before running `npm test`", "🌟");
+  console.log(
+    "\x1b[31m%s\x1b[0m",
+    "\nPlease provide any feedback regarding bugs!",
+    "🐛",
+  );
+  console.log(
+    "\x1b[32m%s\x1b[0m",
+    "\nRemember to wake up Render before running `npm test`",
+    "🌟",
+  );
   let agent, newAgent, xsrfToken, xsrfToken2, agentDetails;
+  console.log(process.env.API_URL, "API_URL\n\n\n");
 
   before(async function () {
     this.timeout(10000);
@@ -68,12 +77,12 @@ describe("\nGet the Current User", function () {
             assert.strictEqual(
               res.body.user[field],
               expected[field].value,
-              `${field} does not match`
+              `${field} does not match`,
             );
             assert.strictEqual(
               typeof res.body.user[field],
               expected[field].type,
-              `Type of ${field} not as expected`
+              `Type of ${field} not as expected`,
             );
           });
           done();

@@ -16,7 +16,11 @@ describe("\nEdit a Spot", function () {
   before(async function () {
     this.timeout(15000);
     [agent, agent2, agentNonAuth] = createManyAgents(apiBaseUrl, 3);
-    [xsrfToken, xsrfToken2, xsrfToken3] = await fetchManyCsrfTokens([agent, agent2, agentNonAuth]);
+    [xsrfToken, xsrfToken2, xsrfToken3] = await fetchManyCsrfTokens([
+      agent,
+      agent2,
+      agentNonAuth,
+    ]);
     await agentSignUp(agent, xsrfToken);
     await agentSignUp(agent2, xsrfToken2);
     let res = await agentCreateSpot(agent, xsrfToken);
@@ -149,7 +153,7 @@ describe("\nEdit a Spot", function () {
             "description",
             "price",
             "country",
-            "state"
+            "state",
           );
           done();
         });
@@ -186,7 +190,7 @@ describe("\nEdit a Spot", function () {
           expect(err).to.not.exist;
           expect(res.body).to.have.property(
             "message",
-            "Spot couldn't be found"
+            "Spot couldn't be found",
           );
           done();
         });

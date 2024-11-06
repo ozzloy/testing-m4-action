@@ -38,9 +38,12 @@ describe("\nDelete a Review", function () {
     [agent, agent2, agent3, agent4, agent5, agent6] = agentArr;
 
     let xsrfTokens = await fetchManyCsrfTokens(agentArr);
-    [xsrfToken, xsrfToken2, xsrfToken3, xsrfToken4, xsrfToken5, xsrfToken6] = xsrfTokens;
+    [xsrfToken, xsrfToken2, xsrfToken3, xsrfToken4, xsrfToken5, xsrfToken6] =
+      xsrfTokens;
 
-    await Promise.all(agentArr.map((el, idx) => agentSignUp(el, xsrfTokens[idx])));
+    await Promise.all(
+      agentArr.map((el, idx) => agentSignUp(el, xsrfTokens[idx])),
+    );
 
     agent7 = createAgent(apiBaseUrl);
     xsrfToken7 = await fetchCsrfToken(agent7);
@@ -89,7 +92,7 @@ describe("\nDelete a Review", function () {
         .set("X-XSRF-TOKEN", xsrfToken7)
         .expect(401)
         .end(function (err, res) {
-          if(err) return done(err);
+          if (err) return done(err);
           return done();
         });
     });
@@ -101,7 +104,7 @@ describe("\nDelete a Review", function () {
         .set("X-XSRF-TOKEN", xsrfToken4)
         .expect(403)
         .end(function (err, res) {
-          if(err) return done(err);
+          if (err) return done(err);
           return done();
         });
     });
@@ -159,7 +162,7 @@ describe("\nDelete a Review", function () {
           expect(err).to.not.exist;
           expect(res.body).to.have.property(
             "message",
-            "Review couldn't be found"
+            "Review couldn't be found",
           );
           done();
         });

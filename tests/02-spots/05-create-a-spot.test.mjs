@@ -10,15 +10,17 @@ import {
   createManyAgents,
 } from "../utils/agent-factory.mjs";
 
-
 describe("\nCreate a Spot", function () {
   let agent, xsrfToken, agentSpot, agent2, xsrfToken2, agentNonAuth, xsrfToken3;
 
   before(async function () {
     this.timeout(15000);
     [agent, agent2, agentNonAuth] = createManyAgents(apiBaseUrl, 3);
-    [xsrfToken, xsrfToken2, xsrfToken3] = await fetchManyCsrfTokens([agent, agent2, agentNonAuth]);
-
+    [xsrfToken, xsrfToken2, xsrfToken3] = await fetchManyCsrfTokens([
+      agent,
+      agent2,
+      agentNonAuth,
+    ]);
 
     await agentSignUp(agent, xsrfToken);
     let res = await agentCreateSpot(agent, xsrfToken);
@@ -50,8 +52,8 @@ describe("\nCreate a Spot", function () {
         .set("Accept", "application/json")
         .expect(401)
         .end(function (err, res) {
- if (err) return done(err);
- done();
+          if (err) return done(err);
+          done();
         });
     });
   });
@@ -127,7 +129,7 @@ describe("\nCreate a Spot", function () {
             "lng",
             "name",
             "description",
-            "price"
+            "price",
           );
           if (err) return done(err);
           done();

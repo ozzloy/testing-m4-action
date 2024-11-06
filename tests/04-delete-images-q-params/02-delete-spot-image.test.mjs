@@ -5,11 +5,21 @@ import {
   agentSignUp,
   fetchCsrfToken,
   agentCreateSpot,
-  agentCreateSpotImage
+  agentCreateSpotImage,
 } from "../utils/agent-factory.mjs";
 
 describe("\nDelete a Spot Image", function () {
-  let agent, xsrfToken, spot, spotImage, spotImage1, xsrfToken2, agent2, spot2, spotImage2, agent3, xsrfToken3;
+  let agent,
+    xsrfToken,
+    spot,
+    spotImage,
+    spotImage1,
+    xsrfToken2,
+    agent2,
+    spot2,
+    spotImage2,
+    agent3,
+    xsrfToken3;
 
   before(async function () {
     this.timeout(15000);
@@ -54,7 +64,7 @@ describe("\nDelete a Spot Image", function () {
           expect(err).to.not.exist;
           done();
         });
-    }); 
+    });
 
     it("Authentication", function (done) {
       agent3
@@ -66,7 +76,6 @@ describe("\nDelete a Spot Image", function () {
         .end(function (err, res) {
           if (err) return done(err);
           return done();
-
         });
     });
 
@@ -81,8 +90,8 @@ describe("\nDelete a Spot Image", function () {
           if (err) return done(err);
           return done();
         });
-    }); 
-  }); 
+    });
+  });
 
   describe("Response", function () {
     it("Status Code - 200", function (done) {
@@ -95,7 +104,7 @@ describe("\nDelete a Spot Image", function () {
         .end(function (err, res) {
           done();
         });
-    }); 
+    });
 
     it("Body Matches API Docs", function (done) {
       agent
@@ -109,8 +118,8 @@ describe("\nDelete a Spot Image", function () {
           expect(res.body).to.have.property("message", "Successfully deleted");
           done();
         });
-    }); 
-  }); 
+    });
+  });
 
   describe("Error response: Couldn't find a Spot Image with the specified id", function () {
     it("Status Code - 404", function (done) {
@@ -120,10 +129,10 @@ describe("\nDelete a Spot Image", function () {
         .set("X-XSRF-TOKEN", xsrfToken)
         .expect(404)
         .end(function (err, res) {
-          if(err) return done(err);
+          if (err) return done(err);
           done();
         });
-    }); 
+    });
     it("Body Matches API Docs", function (done) {
       agent
         .delete(`/spot-images/2352352`)
@@ -131,9 +140,12 @@ describe("\nDelete a Spot Image", function () {
         .set("X-XSRF-TOKEN", xsrfToken)
         .end(function (err, res) {
           expect(err).to.not.exist;
-          expect(res.body).to.have.property("message", "Spot Image couldn't be found");
+          expect(res.body).to.have.property(
+            "message",
+            "Spot Image couldn't be found",
+          );
           done();
         });
     });
-  })
-})
+  });
+});

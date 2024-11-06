@@ -1,13 +1,11 @@
 import { expect } from "chai";
 import { apiBaseUrl } from "../utils/constants.mjs";
-import {
-  createUniqueImage,
-} from "../utils/agent-helpers.mjs";
+import { createUniqueImage } from "../utils/agent-helpers.mjs";
 import {
   agentCreateSpot,
   agentSignUp,
   createManyAgents,
-  fetchManyCsrfTokens
+  fetchManyCsrfTokens,
 } from "../utils/agent-factory.mjs";
 
 describe("\nAdd an Image to a Spot based on the Spot's id", function () {
@@ -16,7 +14,11 @@ describe("\nAdd an Image to a Spot based on the Spot's id", function () {
   before(async function () {
     this.timeout(15000);
     [agent, agent2, agentNonAuth] = createManyAgents(apiBaseUrl, 3);
-    [xsrfToken, xsrfToken2, xsrfToken3] = await fetchManyCsrfTokens([agent, agent2, agentNonAuth]);
+    [xsrfToken, xsrfToken2, xsrfToken3] = await fetchManyCsrfTokens([
+      agent,
+      agent2,
+      agentNonAuth,
+    ]);
     await agentSignUp(agent, xsrfToken);
     await agentSignUp(agent2, xsrfToken2);
     let res = await agentCreateSpot(agent, xsrfToken);
@@ -136,7 +138,7 @@ describe("\nAdd an Image to a Spot based on the Spot's id", function () {
           expect(err).to.not.exist;
           expect(res.body).to.have.property(
             "message",
-            "Spot couldn't be found"
+            "Spot couldn't be found",
           );
 
           done();
