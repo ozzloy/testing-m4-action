@@ -56,7 +56,7 @@ describe("Add Query Filters to Get All Spots", function () {
             expect(err).to.not.exist;
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property("Spots").that.is.an("array");
-            expect(res.body).to.include.keys("page", "size");
+            expect(res.body).to.include.keys("page", "size", "Spots");
             expect(res.body.page).to.equal(1);
             expect(res.body.size).to.equal(20);
             if (res.body.Spots.length > 0) {
