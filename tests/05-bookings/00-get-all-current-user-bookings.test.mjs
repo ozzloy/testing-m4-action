@@ -305,15 +305,8 @@ describe("get all bookings for the current user", function () {
     });
     it("end date within extant booking", function (done) {
       const conflictingBooking = createUniqueBooking();
-      // make a booking with a gap behind it
-      let newEndDate = new Date(conflictingBooking.endDate);
-      newEndDate.setDate(newEndDate.getDate() + 1);
-      newEndDate = newEndDate.toISOString().split("T")[0];
-
-      const extantBooking = {
-        startDate: conflictingBooking.endDate,
-        endDate: newEndDate,
-      };
+      const extantBooking = createUniqueBooking();
+      conflictingBooking.endDate = extantBooking.startDate;
       renter
         .post(path)
         .send(extantBooking)
