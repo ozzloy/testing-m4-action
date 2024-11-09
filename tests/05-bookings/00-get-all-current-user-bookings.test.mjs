@@ -349,15 +349,15 @@ describe("get all bookings for the current user", function () {
       const conflictingBooking = createUniqueBooking();
       const extantBooking = createUniqueBooking();
 
-      const extantStartDate = conflictingBooking.endDate;
-      const extantEndDate = extantBooking.startDate;
+      const extantStart = conflictingBooking.endDate;
+      const extantEnd = extantBooking.startDate;
 
-      const conflictingEndDate = extantBooking.endDate;
+      const conflictingEnd = extantBooking.endDate;
 
-      extantBooking.startDate = extantStartDate;
-      extantBooking.endDate = extantEndDate;
+      extantBooking.startDate = extantStart;
+      extantBooking.endDate = extantEnd;
 
-      conflictingBooking.endDate = conflictingEndDate;
+      conflictingBooking.endDate = conflictingEnd;
 
       renter
         .post(path)
