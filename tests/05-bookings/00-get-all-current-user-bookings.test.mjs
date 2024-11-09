@@ -313,9 +313,10 @@ describe("get all bookings for the current user", function () {
         .set("X-XSRF-TOKEN", xsrfTokenRenter)
         .set("Accept", "application/json")
         .end(function (err, res) {
+          if (err) return done(err);
           // attempt to make a new booking with an date
           // inside the extant booking
-          renter
+          return renter
             .post(path)
             .send(conflictingBooking)
             .set("X-XSRF-TOKEN", xsrfTokenRenter)
