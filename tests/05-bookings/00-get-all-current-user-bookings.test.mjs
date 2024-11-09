@@ -142,6 +142,53 @@ describe("get all bookings for the current user", function () {
           return done();
         });
     });
+    xit("endDate cannot be on or before startDate", function (done) {
+      done();
+    });
+    xit("couldn't find a spot with the specified id", function (done) {
+      /**
+       * Status Code: 404
+       * Headers:
+       *  * Content-Type: application/json
+       * Body:
+       *  ```json
+       *  {
+       *    "message": "Spot couldn't be found"
+       *  }
+       *  ```
+       */
+      done();
+    });
+    /**
+     * Error response: Booking conflict
+     * Status Code: 403
+     * Headers:
+     *  * Content-Type: application/json
+     * Body:
+     * ```json
+     * {
+     *   "message": "Sorry, this spot is already booked for the specified dates",
+     *   "errors": {
+     *     "startDate": "Start date conflicts with an existing booking",
+     *     "endDate": "End date conflicts with an existing booking"
+     *   }
+     * }
+     * ```
+     */
+    xit("start date within extant booking", function (done) {
+      done();
+    });
+    xit("end date within extant booking", function (done) {
+      done();
+    });
+    xit("extant booking inside new booking", function (done) {
+      done();
+    });
+    xit("new booking inside extant booking", function (done) {
+      done();
+    });
+    xit("owner can't book their own spot", function (done) {
+      done();
     });
   });
 });
