@@ -45,15 +45,18 @@ export function createUniqueReview() {
   };
 }
 
-let startOffset = 1;
+let bookingOffset = 1;
+export const getBookingOffset = () => bookingOffset;
 let now = Date.now();
-const millisecondsPerDay = 1000 * 60 * 60 * 24;
+export const millisecondsPerDay = 1000 * 60 * 60 * 24;
 export function createUniqueBooking() {
-  const startDateObject = new Date(now + startOffset * millisecondsPerDay);
+  const startDateObject = new Date(now + bookingOffset * millisecondsPerDay);
   const startDate = startDateObject.toISOString().split("T")[0];
-  const endDateObject = new Date(now + (startOffset + 1) * millisecondsPerDay);
+  const endDateObject = new Date(
+    now + (bookingOffset + 1) * millisecondsPerDay,
+  );
   const endDate = endDateObject.toISOString().split("T")[0];
   const booking = { startDate, endDate };
-  startOffset += 2;
+  bookingOffset += 2;
   return booking;
 }
