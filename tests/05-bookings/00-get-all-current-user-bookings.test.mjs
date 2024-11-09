@@ -105,8 +105,8 @@ describe("get all bookings for the current user", function () {
     });
   });
 
-  describe("error response", function () {
-    xit("incomplete booking: missing end date", function (done) {
+  describe("error responses", function () {
+    xit("rejects booking without end date", function (done) {
       const bookingSansEndDate = { startDate: Date.now() };
       renter
         .post("/spots/" + spot.id + "/bookings")
@@ -119,7 +119,7 @@ describe("get all bookings for the current user", function () {
           return done();
         });
     });
-    xit("incomplete booking: missing start date", function (done) {
+    xit("rejects booking without start date", function (done) {
       const bookingSansStartDate = { endDate: Date.now() };
       renter
         .post("/spots/" + spot.id + "/bookings")
@@ -132,7 +132,7 @@ describe("get all bookings for the current user", function () {
           return done();
         });
     });
-    it("startDate cannot be in the past", function (done) {
+    it("rejects booking with startDate in the past", function (done) {
       /**
        * Status Code: 400
        * Headers:
@@ -175,7 +175,7 @@ describe("get all bookings for the current user", function () {
           return done();
         });
     });
-    it("endDate cannot be on or before startDate", function (done) {
+    it("rejects booking with endDate on or before startDate", function (done) {
       const booking = {
         startDate: new Date(
           Date.now() + getBookingOffset() * millisecondsPerDay,
@@ -204,7 +204,7 @@ describe("get all bookings for the current user", function () {
           return done();
         });
     });
-    it("couldn't find a spot with the specified id", function (done) {
+    it("rejects booking for spot it can't find", function (done) {
       /**
        * Status Code: 404
        * Headers:
@@ -260,7 +260,7 @@ describe("get all bookings for the current user", function () {
      * }
      * ```
      */
-    it("start date within extant booking", function (done) {
+    it("rejects booking with start date conflict", function (done) {
       const extantBooking = createUniqueBooking();
       // make a booking
       renter
@@ -303,7 +303,7 @@ describe("get all bookings for the current user", function () {
             });
         });
     });
-    it("end date within extant booking", function (done) {
+    it("rejects booking with end date conflict", function (done) {
       const conflictingBooking = createUniqueBooking();
       const extantBooking = createUniqueBooking();
       conflictingBooking.endDate = extantBooking.startDate;
@@ -339,7 +339,13 @@ describe("get all bookings for the current user", function () {
             });
         });
     });
-    it("attempt booking surroundng extant booking", function (done) {
+    it("rejects booking that surrounds extant booking", function (done) {
+      /**
+       * start with:
+       * |  conflict start, conflict end, extant start, extant end
+       * end with:
+       * |  conflict start, extant start,   extant end, conflict end
+       */
       const conflictingBooking = createUniqueBooking();
       const extantBooking = createUniqueBooking();
 
@@ -386,7 +392,16 @@ describe("get all bookings for the current user", function () {
             });
         });
     });
-    xit("attempt booking inside extant booking", function (done) {
+    xit("rejects booking inside extant booking", function (done) {
+      /**
+       * start with:
+       * |  extant start, extant end, conflict start, conflict end
+       * end with:
+       * |  extant start, conflict start, conflict end, extant end
+       */
+      const extantBooking = createUniqueBooking();
+      const conflictingBooking = createUniqueBooking();
+
       done();
     });
     xit("owner can't book their own spot", function (done) {
