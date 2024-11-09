@@ -260,8 +260,48 @@ describe("get all bookings for the current user", function () {
      * }
      * ```
      */
-    xit("start date within extant booking", function (done) {
-      done();
+    it("start date within extant booking", function (done) {
+      const extantBooking = createUniqueBooking();
+      // make a booking
+      renter
+        .post(path)
+        .send(extantBooking)
+        .set("X-XSRF-TOKEN", xsrfTokenRenter)
+        .set("Accept", "application/json")
+        .end(function (err, res) {
+          // attempt to make a new booking who's start date
+          // is inside the extant booking
+          let newEndDate = new Date(extantBooking.endDate);
+          newEndDate.setDate(newEndDate.getDate() + 1);
+          newEndDate = newEndDate.toISOString().split("T")[0];
+
+          const conflictingBooking = {
+            startDate: extantBooking.endDate,
+            endDate: newEndDate,
+          };
+
+          renter
+            .post(path)
+            .send(conflictingBooking)
+            .set("X-XSRF-TOKEN", xsrfTokenRenter)
+            .set("Accept", "application/json")
+            .expect("Content-Type", /application\/json/)
+            .end(function (err, res) {
+              if (err) return done(err);
+              const { body } = res;
+              expect(body).to.have.all.keys(["message", "errors"]);
+              const { message, errors } = body;
+              expect(message).to.equal(
+                "Sorry, this spot is already booked for the specified dates",
+              );
+              expect(errors).to.have.all.keys(["startDate"]);
+              const { startDate } = errors;
+              expect(startDate).to.equal(
+                "Start date conflicts with an existing booking",
+              );
+              return done();
+            });
+        });
     });
     xit("end date within extant booking", function (done) {
       done();
