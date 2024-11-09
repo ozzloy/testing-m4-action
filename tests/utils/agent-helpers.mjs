@@ -1,6 +1,6 @@
 export function generateUniqueUsername() {
   const letters = Array.from({ length: 6 }, () =>
-    String.fromCharCode(Math.floor(Math.random() * 26) + 97)
+    String.fromCharCode(Math.floor(Math.random() * 26) + 97),
   ).join("");
   const numbers = Math.floor(Math.random() * 9000) + 1000;
   const timestamp = Date.now();

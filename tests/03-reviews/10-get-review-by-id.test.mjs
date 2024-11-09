@@ -8,7 +8,7 @@ import {
   fetchManyCsrfTokens,
 } from "../utils/agent-factory.mjs";
 
-describe("\nGet all Reviews by a Spot's id", function () {
+describe("Get all Reviews by a Spot's id", function () {
   let agent, xsrfToken, agentSpot, agent2, xsrfToken2, agent3, xsrfToken3;
 
   before(async function () {

@@ -7,7 +7,7 @@ import {
   fetchManyCsrfTokens,
 } from "../utils/agent-factory.mjs";
 
-describe("\nDelete a Spot", function () {
+describe("Delete a Spot", function () {
   let agent,
     xsrfToken,
     agentSpot,

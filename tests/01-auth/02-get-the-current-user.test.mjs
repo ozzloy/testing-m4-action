@@ -6,7 +6,7 @@ import {
   fetchManyCsrfTokens,
 } from "../utils/agent-factory.mjs";
 
-describe("\nGet the Current User", function () {
+describe("Get the Current User", function () {
   console.log("\x1b[32m%s\x1b[0m", "\nWelcome to the test suite!", "👋");
   console.log(
     "\x1b[31m%s\x1b[0m",
@@ -15,7 +15,7 @@ describe("\nGet the Current User", function () {
   );
   console.log(
     "\x1b[32m%s\x1b[0m",
-    "\nRemember to wake up Render before running `npm test`",
+    "Remember to wake up Render before running `npm test`",
     "🌟",
   );
   let agent, newAgent, xsrfToken, xsrfToken2, agentDetails;

@@ -9,7 +9,7 @@ import {
   agentCreateSpotImage,
 } from "../utils/agent-factory.mjs";
 
-describe("\nGet all Spots owned by the Current User", function () {
+describe("Get all Spots owned by the Current User", function () {
   let agent, xsrfToken, agentSpot, agentImage, unAuthAgent, xsrfToken2;
 
   before(async function () {

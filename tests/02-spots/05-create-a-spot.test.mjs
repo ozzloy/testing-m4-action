@@ -10,7 +10,7 @@ import {
   createManyAgents,
 } from "../utils/agent-factory.mjs";
 
-describe("\nCreate a Spot", function () {
+describe("Create a Spot", function () {
   let agent, xsrfToken, agentSpot, agent2, xsrfToken2, agentNonAuth, xsrfToken3;
 
   before(async function () {
