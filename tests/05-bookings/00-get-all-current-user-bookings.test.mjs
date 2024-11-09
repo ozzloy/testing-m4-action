@@ -204,7 +204,7 @@ describe("get all bookings for the current user", function () {
           return done();
         });
     });
-    xit("couldn't find a spot with the specified id", function (done) {
+    it("couldn't find a spot with the specified id", function (done) {
       /**
        * Status Code: 404
        * Headers:
@@ -216,7 +216,33 @@ describe("get all bookings for the current user", function () {
        *  }
        *  ```
        */
-      done();
+      const booking = {
+        startDate: new Date(
+          Date.now() + getBookingOffset() * millisecondsPerDay,
+        )
+          .toISOString()
+          .split("T")[0],
+        endDate: new Date(
+          Date.now() + (getBookingOffset() + 1) * millisecondsPerDay,
+        )
+          .toISOString()
+          .split("T")[0],
+      };
+      renter
+        .post("/spots/0/bookings")
+        .send(booking)
+        .set("X-XSRF-TOKEN", xsrfTokenRenter)
+        .set("Accept", "application/json")
+        .expect("Content-Type", /application\/json/)
+        .expect(404)
+        .end(function (err, res) {
+          if (err) return done(err);
+          const { body } = res;
+          expect(body).to.have.all.keys(["message"]);
+          const { message } = body;
+          expect(message).to.equal("Spot couldn't be found");
+          return done();
+        });
     });
     /**
      * Error response: Booking conflict
