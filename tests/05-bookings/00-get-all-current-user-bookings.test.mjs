@@ -30,6 +30,7 @@ describe("get all bookings for the current user", function () {
     await agentSignUp(renter, xsrfTokenRenter);
     const spotResult = await agentCreateSpot(owner, xsrfTokenOwner);
     spot = spotResult.body;
+    path = "/spots/" + spot.id + "/bookings";
   });
 
   describe("POST /spots/:spotId/bookings creates booking", function () {
@@ -101,6 +102,36 @@ describe("get all bookings for the current user", function () {
           expect(endDate).to.equal(booking.endDate);
           done();
         });
+    });
+  });
+
+  describe("error response", function () {
+    xit("incomplete booking: missing end date", function (done) {
+      const bookingSansEndDate = { startDate: Date.now() };
+      renter
+        .post("/spots/" + spot.id + "/bookings")
+        .send(bookingSansEndDate)
+        .set("X-XSRF-TOKEN", xsrfTokenRenter)
+        .set("Accept", "application/json")
+        .expect(400)
+        .end(function (err, res) {
+          expect(err).to.not.exist;
+          return done();
+        });
+    });
+    xit("incomplete booking: missing start date", function (done) {
+      const bookingSansStartDate = { endDate: Date.now() };
+      renter
+        .post("/spots/" + spot.id + "/bookings")
+        .send(bookingSansEndDate)
+        .set("X-XSRF-TOKEN", xsrfTokenRenter)
+        .set("Accept", "application/json")
+        .expect(400)
+        .end(function (err, res) {
+          expect(err).to.not.exist;
+          return done();
+        });
+    });
     it("startDate cannot be in the past", function (done) {
       /**
        * Status Code: 400
@@ -121,8 +152,10 @@ describe("get all bookings for the current user", function () {
       const bookingStartsInPast = {
         startDate: new Date(Date.now() - millisecondsPerDay)
           .toISOString()
-          .split("T"),
-        endDate: new Date(Date.now() + millisecondsPerDay),
+          .split("T")[0],
+        endDate: new Date(Date.now() + millisecondsPerDay)
+          .toISOString()
+          .split("T")[0],
       };
       renter
         .post(path)
@@ -142,8 +175,34 @@ describe("get all bookings for the current user", function () {
           return done();
         });
     });
-    xit("endDate cannot be on or before startDate", function (done) {
-      done();
+    it("endDate cannot be on or before startDate", function (done) {
+      const booking = {
+        startDate: new Date(
+          Date.now() + getBookingOffset() * millisecondsPerDay,
+        )
+          .toISOString()
+          .split("T")[0],
+        endDate: new Date(Date.now() + getBookingOffset() * millisecondsPerDay)
+          .toISOString()
+          .split("T")[0],
+      };
+      renter
+        .post(path)
+        .send(booking)
+        .set("X-XSRF-TOKEN", xsrfTokenRenter)
+        .set("Accept", "application/json")
+        .expect(400)
+        .end(function (err, res) {
+          if (err) return done(err);
+          const { body } = res;
+          expect(body).to.have.all.keys("message", "errors");
+          const { message, errors } = body;
+          expect(message).to.be.oneOf(["Validation error", "Bad Request"]);
+          expect(errors).to.be.an("object").that.has.property("endDate");
+          const { endDate } = errors;
+          expect(endDate).to.equal("endDate cannot be on or before startDate");
+          return done();
+        });
     });
     xit("couldn't find a spot with the specified id", function (done) {
       /**
