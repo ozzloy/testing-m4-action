@@ -11,7 +11,7 @@ export function createUniqueUser() {
   return {
     firstName: "Fakey",
     lastName: "McFakeFake",
-    email: `${generateUniqueUsername()}@test.com`,
+    email: `${generateUniqueUsername()}@example.com`,
     username: generateUniqueUsername(),
     password: "secret password",
   };
