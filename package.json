@@ -4,18 +4,22 @@
   "description": "## Comprehensive Testing Suite for the M4 API Project",
   "type": "module",
   "scripts": {
-    "test": "mocha ./tests/**/*.test.mjs",
-    "test-auth": "mocha './tests/01-auth/**/*.test.mjs'",
-    "test-spots": "mocha './tests/02-spots/**/*.test.mjs'",
-    "test-reviews": "mocha './tests/03-reviews/**/*.test.mjs'",
-    "test-images": "mocha './tests/04-delete-images-q-params/**/*.test.mjs'"
+    "test": "dotenv mocha ./tests/**/*.test.mjs",
+    "test-auth": "dotenv mocha './tests/01-auth/**/*.test.mjs'",
+    "test-spots": "dotenv mocha './tests/02-spots/**/*.test.mjs'",
+    "test-reviews": "dotenv mocha './tests/03-reviews/**/*.test.mjs'",
+    "test-images": "dotenv mocha './tests/04-delete-images-q-params/**/*.test.mjs'",
+    "test-bookings": "dotenv mocha './tests/05-bookings/**/*.test.mjs'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chai": "^5.1.0",
+    "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2",
     "mocha": "^10.4.0",
+    "per-env": "^1.0.2",
     "supertest": "^7.0.0"
   }
 }

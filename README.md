@@ -10,35 +10,13 @@ Comprehensive Test Collection in Postman.
 - Run: `npm install`.
 
 - Update the base url in
-  [`test/utils/constants`](./tests/utils/constants.mjs) ⭐
+  [`.env`](.env) ⭐
 
-  for example, you could make the following change:
-```diff
-diff --git a/tests/utils/constants.mjs b/tests/utils/constants.mjs
-index 3a82462..fab2142 100644
---- a/tests/utils/constants.mjs
-+++ b/tests/utils/constants.mjs
-@@ -9,16 +9,15 @@ If you're testing locally, ensure your server is running.
- */
- 
- /* For Local Testing */
--// export const apiBaseUrl = 'http://localhost:8000/api';
-+export const apiBaseUrl = "http://localhost:5001/api";
- 
- /* For Testing Your Live Site Locally*/
- // export const apiBaseUrl = 'https://testing-action.onrender.com/api';
- 
--
- // -----------------------------------------------------------------------------
- // GitHub Actions
- // -----------------------------------------------------------------------------
- 
- /* For Using the GitHub Action to Test Your Live Site;
- Use this when your passing all tests and are ready to officially submit your project */
--export const apiBaseUrl = process.env.API_URL;
-+// export const apiBaseUrl = process.env.API_URL;
+for example, it could look like this
+```bash
+API_URL="http://localhost:5001/api"
+# API_URL="https://example-slug.onrender.com/api"
 ```
-if your server is up and running on port 5001.
 
 - Run: `npm test`.
 - or one of the following
@@ -46,6 +24,7 @@ if your server is up and running on port 5001.
   - `npm run test-spots`
   - `npm run test-reviews`
   - `npm run test-images`
+  - `npm run test-bookings`
 
 ## Running the Tests
 
