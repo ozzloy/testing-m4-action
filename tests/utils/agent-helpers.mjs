@@ -46,11 +46,13 @@ export function createUniqueReview() {
 }
 
 let startOffset = 1;
+let now = Date.now();
+const millisecondsPerDay = 1000 * 60 * 60 * 24;
 export function createUniqueBooking() {
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() + startOffset);
-  const endDate = new Date();
-  endDate.setDate(endDate.getDate() + startOffset + 1);
+  const startDateObject = new Date(now + startOffset * millisecondsPerDay);
+  const startDate = startDateObject.toISOString().split("T")[0];
+  const endDateObject = new Date(now + (startOffset + 1) * millisecondsPerDay);
+  const endDate = endDateObject.toISOString().split("T")[0];
   const booking = { startDate, endDate };
   startOffset += 2;
   return booking;

@@ -60,3 +60,13 @@ export const expectedSpotByIdKeys = [
   "SpotImages",
   "Owner",
 ];
+
+export const expectedBookingKeys = [
+  "id",
+  "spotId",
+  "userId",
+  "startDate",
+  "endDate",
+  "createdAt",
+  "updatedAt",
+];

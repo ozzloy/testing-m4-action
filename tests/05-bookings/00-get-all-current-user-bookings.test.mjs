@@ -9,6 +9,7 @@ import {
 } from "../utils/agent-factory.mjs";
 import { createUniqueBooking } from "../utils/agent-helpers.mjs";
 import { apiBaseUrl } from "../utils/constants.mjs";
+import { expectedBookingKeys } from "../utils/err-helpers.mjs";
 
 describe("get all bookings for the current user", function () {
   let owner, renter, agentNoAuth;
@@ -72,6 +73,28 @@ describe("get all bookings for the current user", function () {
         .expect(201)
         .end(function (err, res) {
           expect(err).to.not.exist;
+          done();
+        });
+    });
+
+    it("has a body that matches the api docs", function (done) {
+      const booking = createUniqueBooking();
+      renter
+        .post("/spots/" + spot.id + "/bookings")
+        .send(booking)
+        .set("X-XSRF-TOKEN", xsrfTokenRenter)
+        .set("Accept", "application/json")
+        .expect(201)
+        .end(function (err, res) {
+          expect(err).to.not.exist;
+          const { body } = res;
+          expect(body).to.include.keys(expectedBookingKeys);
+          let { startDate, endDate, spotId } = body;
+          startDate = new Date(startDate).toISOString().split("T")[0];
+          endDate = new Date(endDate).toISOString().split("T")[0];
+          expect(spotId).to.equal(spot.id);
+          expect(startDate).to.equal(booking.startDate);
+          expect(endDate).to.equal(booking.endDate);
           done();
         });
     });
