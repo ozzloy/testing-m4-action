@@ -392,17 +392,58 @@ describe("get all bookings for the current user", function () {
             });
         });
     });
-    xit("rejects booking inside extant booking", function (done) {
+    it("rejects booking inside extant booking", function (done) {
       /**
        * start with:
-       * |  extant start, extant end, conflict start, conflict end
+       * |  extant start,     extant end, conflict start, conflict end
        * end with:
-       * |  extant start, conflict start, conflict end, extant end
+       * |  extant start, conflict start,   conflict end,   extant end
        */
       const extantBooking = createUniqueBooking();
       const conflictingBooking = createUniqueBooking();
 
-      done();
+      const extantEnd = conflictingBooking.endDate;
+
+      const conflictingStart = extantBooking.endDate;
+      const conflictingEnd = conflictingBooking.startDate;
+
+      conflictingBooking.startDate = conflictingStart;
+      conflictingBooking.endDate = conflictingEnd;
+
+      extantBooking.endDate = extantEnd;
+
+      renter
+        .post(path)
+        .send(extantBooking)
+        .set("X-XSRF-TOKEN", xsrfTokenRenter)
+        .set("Accept", "application/json")
+        .end(function (err, res) {
+          if (err) return done(err);
+          return renter
+            .post(path)
+            .send(conflictingBooking)
+            .set("X-XSRF-TOKEN", xsrfTokenRenter)
+            .set("Accept", "application/json")
+            .expect("Content-Type", /application\/json/)
+            .end(function (err, res) {
+              if (err) return done(err);
+              const { body } = res;
+              expect(body).to.have.all.keys(["message", "errors"]);
+              const { message, errors } = body;
+              expect(message).to.equal(
+                "Sorry, this spot is already booked for the specified dates",
+              );
+              expect(errors).to.have.all.keys(["startDate", "endDate"]);
+              const { startDate, endDate } = errors;
+              expect(startDate).to.equal(
+                "Start date conflicts with an existing booking",
+              );
+              expect(endDate).to.equal(
+                "End date conflicts with an existing booking",
+              );
+              return done();
+            });
+        });
     });
     xit("owner can't book their own spot", function (done) {
       done();
