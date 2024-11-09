@@ -116,3 +116,19 @@ export async function agentCreateReview(agent, xsrfToken, nonAgentSpotId) {
     );
   }
 }
+
+export async function agentCreateBooking(agent, xsrfToken, bookingDetails) {
+  const { spot, ...booking } = bookingDetails;
+  try {
+    const response = await agent
+      .post(`/spots/${spot.id}/bookings`)
+      .send(booking)
+      .set("Accept", "application/json")
+      .set("X-XSRF-TOKEN", xsrfToken)
+      .expect((response) => expect(response.status).to.be.oneOf([200, 201]));
+    return response;
+  } catch (e) {
+    console.log(e);
+    assert(!e, "Could not test this route because the 'Create a Booking'");
+  }
+}

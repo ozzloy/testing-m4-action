@@ -44,3 +44,14 @@ export function createUniqueReview() {
     stars: 5,
   };
 }
+
+let startOffset = 1;
+export function createUniqueBooking() {
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() + startOffset);
+  const endDate = new Date();
+  endDate.setDate(endDate.getDate() + startOffset + 1);
+  const booking = { startDate, endDate };
+  startOffset += 2;
+  return booking;
+}
