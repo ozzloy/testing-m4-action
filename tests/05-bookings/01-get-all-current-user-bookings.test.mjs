@@ -198,7 +198,29 @@ describe("get all current user bookings", function () {
  *       }
  *       ```
  */
-describe("TODO: get all bookings for spot owned by current user", TODO);
+describe("get all bookings for spot not owned by current user", function () {
+  let owner, renter, nonAuth;
+  let xsrfOwner, xsrfRenter, xsrfNonAuth;
+  let spot;
+  let path;
+  before(async function () {
+    this.timeout(15000);
+    [owner, renter, nonAuth] = createManyAgents(apiBaseUrl, 3);
+    [xsrfOwner, xsrfRenter, xsrfNonAuth] = await fetchManyCsrfTokens([
+      owner,
+      renter,
+      nonAuth,
+    ]);
+    await agentSignUp(owner, xsrfOwner);
+    await agentSignUp(renter, xsrfRenter);
+    spot = (await agentCreateSpot(owner, xsrfOwner)).body;
+    path = "/spots/" + spot.id + "/bookings";
+  });
+
+  it("has correct endpoint", async function () {
+    renter.get(path).expect(200);
+  });
+});
 
 /**
  * get all bookings for spot which current user owns
