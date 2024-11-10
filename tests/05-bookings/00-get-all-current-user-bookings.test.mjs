@@ -228,18 +228,7 @@ describe("get all bookings for the current user", function () {
        *  }
        *  ```
        */
-      const booking = {
-        startDate: new Date(
-          Date.now() + getBookingOffset() * millisecondsPerDay,
-        )
-          .toISOString()
-          .split("T")[0],
-        endDate: new Date(
-          Date.now() + (getBookingOffset() + 1) * millisecondsPerDay,
-        )
-          .toISOString()
-          .split("T")[0],
-      };
+      const booking = createUniqueBooking();
       renter
         .post("/spots/0/bookings")
         .send(booking)
