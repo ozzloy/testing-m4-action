@@ -4,7 +4,9 @@ import { apiBaseUrl } from "../utils/constants.mjs";
 
 import {
   agentSignUp,
+  createAgent,
   createManyAgents,
+  fetchCsrfToken,
   fetchManyCsrfTokens,
 } from "../utils/agent-factory.mjs";
 
@@ -71,22 +73,21 @@ describe("get all current user bookings", function () {
       });
   });
 
-  it("returns a body with empty Bookings", function (done) {
-    owner
+  it("returns a body with empty Bookings", async function () {
+    const agent = createAgent(apiBaseUrl);
+    const xsrf = await fetchCsrfToken(agent);
+    await agentSignUp(agent, xsrf);
+    const res = await agent
       .get("/bookings/current")
       .expect(200)
       .set("Accept", "application/json")
       .set("X-XSRF-TOKEN", xsrfOwner)
-      .expect("Content-Type", /application\/json/)
-      .end(function (err, res) {
-        if (err) return done(err);
-        expect(res.body).to.be.an("object");
-        const { body } = res;
-        expect(body).to.have.property("Bookings").that.is.an("array");
-        const { Bookings } = body;
-        expect(Bookings).to.be.empty;
-        return done();
-      });
+      .expect("Content-Type", /application\/json/);
+    expect(res.body).to.be.an("object");
+    const { body } = res;
+    expect(body).to.have.property("Bookings").that.is.an("array");
+    const { Bookings } = body;
+    expect(Bookings).to.be.empty;
   });
 });
 
