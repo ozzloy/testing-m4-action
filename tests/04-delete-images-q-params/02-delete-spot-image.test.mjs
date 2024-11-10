@@ -8,7 +8,7 @@ import {
   agentCreateSpotImage,
 } from "../utils/agent-factory.mjs";
 
-describe("\nDelete a Spot Image", function () {
+describe("Delete a Spot Image", function () {
   let agent,
     xsrfToken,
     spot,

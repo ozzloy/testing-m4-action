@@ -6,7 +6,7 @@ import {
   agentSignUp,
 } from "../utils/agent-factory.mjs";
 
-describe("\nLog In a User", function () {
+describe("Log In a User", function () {
   let agent, xsrfToken, agentDetails;
 
   before(async function () {

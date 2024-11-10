@@ -9,7 +9,7 @@ import {
   fetchManyCsrfTokens,
 } from "../utils/agent-factory.mjs";
 
-describe("\nSign Up a User", function () {
+describe("Sign Up a User", function () {
   let agent,
     xsrfToken,
     agent2,

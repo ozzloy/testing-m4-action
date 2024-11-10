@@ -9,7 +9,7 @@ import {
   fetchCsrfToken,
 } from "../utils/agent-factory.mjs";
 
-describe("\nCreate a Review for a Spot based on the Spot's id", function () {
+describe("Create a Review for a Spot based on the Spot's id", function () {
   let agent,
     xsrfToken,
     agentSpot,

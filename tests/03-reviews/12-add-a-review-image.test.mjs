@@ -11,7 +11,7 @@ import {
 } from "../utils/agent-factory.mjs";
 import { generateUniqueUsername } from "../utils/agent-helpers.mjs";
 
-describe("\nAdd an Image to a Review based on the Review's id", function () {
+describe("Add an Image to a Review based on the Review's id", function () {
   let agent,
     xsrfToken,
     agentSpot,

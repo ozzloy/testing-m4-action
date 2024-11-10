@@ -9,7 +9,7 @@ import {
   agentCreateSpotImage,
 } from "../utils/agent-factory.mjs";
 
-describe("\nGet details of a Spot from an id", function () {
+describe("Get details of a Spot from an id", function () {
   let agent, xsrfToken, spotId;
 
   before(async function () {

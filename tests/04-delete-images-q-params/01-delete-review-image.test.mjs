@@ -11,7 +11,7 @@ import {
   fetchCsrfToken,
 } from "../utils/agent-factory.mjs";
 
-describe("\nDelete a Review Image", function () {
+describe("Delete a Review Image", function () {
   let agent,
     xsrfToken,
     agentSpot,

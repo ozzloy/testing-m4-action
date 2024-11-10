@@ -10,7 +10,7 @@ import {
   fetchCsrfToken,
 } from "../utils/agent-factory.mjs";
 
-describe("\nEdit a Review", function () {
+describe("Edit a Review", function () {
   let agent,
     xsrfToken,
     agentSpot,

@@ -8,7 +8,7 @@ import {
   fetchManyCsrfTokens,
 } from "../utils/agent-factory.mjs";
 
-describe("\nAdd an Image to a Spot based on the Spot's id", function () {
+describe("Add an Image to a Spot based on the Spot's id", function () {
   let agent, xsrfToken, agentSpot, agent2, xsrfToken2, agentNonAuth, xsrfToken3;
 
   before(async function () {

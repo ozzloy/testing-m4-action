@@ -10,7 +10,7 @@ import {
   createAgent,
 } from "../utils/agent-factory.mjs";
 
-describe("\nDelete a Review", function () {
+describe("Delete a Review", function () {
   let agent,
     xsrfToken,
     agentSpot,

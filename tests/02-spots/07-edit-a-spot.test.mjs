@@ -10,7 +10,7 @@ import {
   fetchManyCsrfTokens,
 } from "../utils/agent-factory.mjs";
 
-describe("\nEdit a Spot", function () {
+describe("Edit a Spot", function () {
   let agent, xsrfToken, agentSpot, agent2, xsrfToken2, agentNonAuth, xsrfToken3;
 
   before(async function () {

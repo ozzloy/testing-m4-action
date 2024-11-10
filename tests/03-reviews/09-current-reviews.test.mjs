@@ -10,7 +10,7 @@ import {
   fetchManyCsrfTokens,
 } from "../utils/agent-factory.mjs";
 
-describe("\nGet all Reviews of the Current User", function () {
+describe("Get all Reviews of the Current User", function () {
   let agent,
     xsrfToken,
     agent2,
