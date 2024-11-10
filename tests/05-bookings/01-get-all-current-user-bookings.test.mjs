@@ -71,7 +71,7 @@ describe("get all current user bookings", function () {
       });
   });
 
-  it("returns a body that matches API docs", function (done) {
+  it("returns a body with empty Bookings", function (done) {
     owner
       .get("/bookings/current")
       .expect(200)
@@ -80,7 +80,11 @@ describe("get all current user bookings", function () {
       .expect("Content-Type", /application\/json/)
       .end(function (err, res) {
         if (err) return done(err);
+        expect(res.body).to.be.an("object");
         const { body } = res;
+        expect(body).to.have.property("Bookings").that.is.an("array");
+        const { Bookings } = body;
+        expect(Bookings).to.be.empty;
         return done();
       });
   });
