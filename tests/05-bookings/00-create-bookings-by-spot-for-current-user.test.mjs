@@ -25,7 +25,7 @@ describe("create bookings by spot for current user", function () {
     [owner, renter, agentNoAuth] = createManyAgents(apiBaseUrl, 3);
     // create a session
     [xsrfTokenOwner, xsrfTokenRenter, xsrfTokenNoAuth] =
-      await fetchManyCsrfTokens([owner, renter, agentNoAuth], 3);
+      await fetchManyCsrfTokens([owner, renter, agentNoAuth]);
     await agentSignUp(owner, xsrfTokenOwner);
     await agentSignUp(renter, xsrfTokenRenter);
     const spotResult = await agentCreateSpot(owner, xsrfTokenOwner);
