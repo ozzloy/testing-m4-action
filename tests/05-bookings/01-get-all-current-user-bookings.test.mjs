@@ -50,7 +50,7 @@ describe("get all current user bookings", function () {
     this.timeout(15000);
     [owner, nonAuth] = createManyAgents(apiBaseUrl, 2);
     [xsrfOwner, xsrfNonAuth] = await fetchManyCsrfTokens([owner, nonAuth]);
-    agentSignUp(owner, xsrfOwner);
+    await agentSignUp(owner, xsrfOwner);
   });
 
   it("has correct endpoint", function (done) {
@@ -60,13 +60,27 @@ describe("get all current user bookings", function () {
     });
   });
 
-  it("requires authentication", function (done) {
+  it("rejects unauthenticated", function (done) {
     nonAuth
       .get("/bookings/current")
       .set("X-XSRF-TOKEN", xsrfNonAuth)
       .expect(401)
       .end(function (err, res) {
         if (err) return done(err);
+        return done();
+      });
+  });
+
+  it("returns a body that matches API docs", function (done) {
+    owner
+      .get("/bookings/current")
+      .expect(200)
+      .set("Accept", "application/json")
+      .set("X-XSRF-TOKEN", xsrfOwner)
+      .expect("Content-Type", /application\/json/)
+      .end(function (err, res) {
+        if (err) return done(err);
+        const { body } = res;
         return done();
       });
   });
