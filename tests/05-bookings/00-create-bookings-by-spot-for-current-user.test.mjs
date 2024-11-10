@@ -106,7 +106,7 @@ describe("create bookings by spot for current user", function () {
   });
 
   describe("error responses", function () {
-    xit("rejects booking with no end date", function (done) {
+    xit("TODO: rejects booking with no end date", function (done) {
       const bookingSansEndDate = { startDate: Date.now() };
       renter
         .post(path)
@@ -119,7 +119,7 @@ describe("create bookings by spot for current user", function () {
           return done();
         });
     });
-    xit("rejects booking with no start date", function (done) {
+    xit("TODO: rejects booking with no start date", function (done) {
       const bookingSansStartDate = { endDate: Date.now() };
       renter
         .post(path)
@@ -470,7 +470,7 @@ describe("create bookings by spot for current user", function () {
             });
         });
     });
-    xit("owner can't book their own spot", function (done) {
+    xit("TODO: owner can't book their own spot", function (done) {
       done();
     });
   });
