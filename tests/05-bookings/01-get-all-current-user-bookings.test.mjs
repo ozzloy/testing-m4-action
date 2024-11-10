@@ -95,7 +95,6 @@ import { relative } from "path";
 const getFileLine = () => {
   const err = new Error();
   const stack = err.stack.split("\n")[5];
-  // at file:///.../tests/05-bookings/01-get-all-current-user-bookings.test.mjs:91:1
   const match = stack.match(/at\s+(?:\w+\s+)?\(?(.*):(\d+):\d+\)?/);
 
   const line = match ? parseInt(match[2]) : "unknown";
