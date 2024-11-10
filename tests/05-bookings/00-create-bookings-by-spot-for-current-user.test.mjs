@@ -38,7 +38,7 @@ describe("create bookings by spot for current user", function () {
       try {
         const booking = createUniqueBooking();
         renter
-          .post("/spots/" + spot.id + "/bookings")
+          .post(path)
           .send(booking)
           .set("X-XSRF-TOKEN", xsrfTokenRenter)
           .set("Accept", "application/json")
@@ -55,7 +55,7 @@ describe("create bookings by spot for current user", function () {
     it("requires authentication", function (done) {
       const booking = createUniqueBooking();
       agentNoAuth
-        .post("/spots/" + spot.id + "/bookings")
+        .post(path)
         .send(booking)
         .set("X-XSRF-TOKEN", xsrfTokenNoAuth)
         .set("Accept", "application/json")
@@ -71,7 +71,7 @@ describe("create bookings by spot for current user", function () {
     it("status code 201", function (done) {
       const booking = createUniqueBooking();
       renter
-        .post("/spots/" + spot.id + "/bookings")
+        .post(path)
         .send(booking)
         .set("X-XSRF-TOKEN", xsrfTokenRenter)
         .set("Accept", "application/json")
@@ -85,7 +85,7 @@ describe("create bookings by spot for current user", function () {
     it("has a body that matches the api docs", function (done) {
       const booking = createUniqueBooking();
       renter
-        .post("/spots/" + spot.id + "/bookings")
+        .post(path)
         .send(booking)
         .set("X-XSRF-TOKEN", xsrfTokenRenter)
         .set("Accept", "application/json")
@@ -109,7 +109,7 @@ describe("create bookings by spot for current user", function () {
     xit("rejects booking with no end date", function (done) {
       const bookingSansEndDate = { startDate: Date.now() };
       renter
-        .post("/spots/" + spot.id + "/bookings")
+        .post(path)
         .send(bookingSansEndDate)
         .set("X-XSRF-TOKEN", xsrfTokenRenter)
         .set("Accept", "application/json")
@@ -122,7 +122,7 @@ describe("create bookings by spot for current user", function () {
     xit("rejects booking with no start date", function (done) {
       const bookingSansStartDate = { endDate: Date.now() };
       renter
-        .post("/spots/" + spot.id + "/bookings")
+        .post(path)
         .send(bookingSansEndDate)
         .set("X-XSRF-TOKEN", xsrfTokenRenter)
         .set("Accept", "application/json")
