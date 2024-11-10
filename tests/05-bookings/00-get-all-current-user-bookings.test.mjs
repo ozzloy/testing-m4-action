@@ -15,7 +15,7 @@ import {
 import { apiBaseUrl } from "../utils/constants.mjs";
 import { expectedBookingKeys } from "../utils/err-helpers.mjs";
 
-describe("get all bookings for the current user", function () {
+describe("create bookings by spot for current user", function () {
   let owner, renter, agentNoAuth;
   let xsrfTokenOwner, xsrfTokenRenter, xsrfTokenNoAuth;
   let spot, path;
