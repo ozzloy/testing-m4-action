@@ -177,29 +177,7 @@ describe("get all current user bookings", function () {
   });
 });
 
-/**
- * get all bookings for spot which current user does not own
- *   request
- *     GET /spots/:spotId/bookings
- *   response
- *     status:
- *       200
- *     headers:
- *       Content-Type: application/json
- *     body:
- *       ```json
- *       {
- *         "Bookings": [
- *           {
- *             "spotId": 1,
- *             "startDate": "2021-11-19",
- *             "endDate": "2021-11-20"
- *           }
- *         ]
- *       }
- *       ```
- */
-describe("get all bookings for spot not owned by current user", function () {
+describe("get all bookings by spot", function () {
   let owner, renter, nonAuth;
   let xsrfOwner, xsrfRenter, xsrfNonAuth;
   let spot;
@@ -226,84 +204,108 @@ describe("get all bookings for spot not owned by current user", function () {
     nonAuth.get(path).set("X-XSRF-TOKEN", xsrfNonAuth).expect(401);
   });
 
-  it("returns a body with valid booking", async function () {
-    const bookingDetails = createUniqueBooking();
-    bookingDetails.spot = spot;
-    const bookingResponse = await agentCreateBooking(
-      renter,
-      xsrfRenter,
-      bookingDetails,
-    );
-    const res = await renter
-      .get(path)
-      .expect(200)
-      .set("Accept", "application/json")
-      .set("X-XSRF-TOKEN", xsrfRenter)
-      .expect("Content-Type", /application\/json/);
-    const { body } = res;
-    expect(body).to.have.property("Bookings").that.is.an("array");
-    const { Bookings } = body;
-    expect(Bookings).to.not.be.empty;
-    const [booking] = Bookings;
-    expect(booking).to.be.an("object");
-    expect(booking).to.have.all.keys(expectedBookingBySpotNonOwnerKeys);
-    const { spotId, startDate, endDate } = booking;
-    expect(
-      [startDate, endDate].every(isDateString),
-      "booking's startDate and endDate should be dates",
-    ).to.be.true;
-    expect(isInteger(spotId), "booking's spotId should be an integer").to.be
-      .true;
+  /**
+   * get all bookings for spot which current user does not own
+   *   request
+   *     GET /spots/:spotId/bookings
+   *   response
+   *     status:
+   *       200
+   *     headers:
+   *       Content-Type: application/json
+   *     body:
+   *       ```json
+   *       {
+   *         "Bookings": [
+   *           {
+   *             "spotId": 1,
+   *             "startDate": "2021-11-19",
+   *             "endDate": "2021-11-20"
+   *           }
+   *         ]
+   *       }
+   *       ```
+   */
+  describe("spot not owned by current user", function () {
+    it("returns a body with valid booking", async function () {
+      const bookingDetails = createUniqueBooking();
+      bookingDetails.spot = spot;
+      const bookingResponse = await agentCreateBooking(
+        renter,
+        xsrfRenter,
+        bookingDetails,
+      );
+      const res = await renter
+        .get(path)
+        .expect(200)
+        .set("Accept", "application/json")
+        .set("X-XSRF-TOKEN", xsrfRenter)
+        .expect("Content-Type", /application\/json/);
+      const { body } = res;
+      expect(body).to.have.property("Bookings").that.is.an("array");
+      const { Bookings } = body;
+      expect(Bookings).to.not.be.empty;
+      const [booking] = Bookings;
+      expect(booking).to.be.an("object");
+      expect(booking).to.have.all.keys(expectedBookingBySpotNonOwnerKeys);
+      const { spotId, startDate, endDate } = booking;
+      expect(
+        [startDate, endDate].every(isDateString),
+        "booking's startDate and endDate should be dates",
+      ).to.be.true;
+      expect(Number.isInteger(spotId), "booking's spotId should be an integer")
+        .to.be.true;
+    });
   });
+
+  /**
+   * get all bookings for spot which current user owns
+   *   request:
+   *     GET /spots/:spotId/bookings
+   *   response:
+   *     status:
+   *       200
+   *     headers:
+   *       Content-Type: application/json
+   *     body:
+   *       ```json
+   *       {
+   *         "Bookings": [
+   *           {
+   *             "User": {
+   *               "id": 2,
+   *               "firstName": "John",
+   *               "lastName": "Smith"
+   *             },
+   *             "id": 1,
+   *             "spotId": 1,
+   *             "userId": 2,
+   *             "startDate": "2021-11-19",
+   *             "endDate": "2021-11-20",
+   *             "createdAt": "2021-11-19 20:39:36",
+   *             "updatedAt": "2021-11-19 20:39:36"
+   *           }
+   *         ]
+   *       }
+   *       ```
+   */
+  describe("TODO: spot owned by current user", TODO);
+
+  /**
+   * get a spot that doesn't exist
+   *   request:
+   *     GET /spots/:spotId/bookings
+   *   response:
+   *     status:
+   *       200
+   *     headers:
+   *       Content-Type: application/json
+   *     body:
+   *       ```json
+   *       {
+   *         "message": "Spot couldn't be found"
+   *       }
+   *       ```
+   */
+  describe("TODO: spot could not be found", TODO);
 });
-
-/**
- * get all bookings for spot which current user owns
- *   request:
- *     GET /spots/:spotId/bookings
- *   response:
- *     status:
- *       200
- *     headers:
- *       Content-Type: application/json
- *     body:
- *       ```json
- *       {
- *         "Bookings": [
- *           {
- *             "User": {
- *               "id": 2,
- *               "firstName": "John",
- *               "lastName": "Smith"
- *             },
- *             "id": 1,
- *             "spotId": 1,
- *             "userId": 2,
- *             "startDate": "2021-11-19",
- *             "endDate": "2021-11-20",
- *             "createdAt": "2021-11-19 20:39:36",
- *             "updatedAt": "2021-11-19 20:39:36"
- *           }
- *         ]
- *       }
- *       ```
- */
-describe("TODO: get all bookings for spot owned by current user", TODO);
-
-/**
- * get a spot that doesn't exist
- *   request:
- *     GET /spots/:spotId/bookings
- *   response:
- *     status:
- *       200
- *     headers:
- *       Content-Type: application/json
- *     body:
- *       ```json
- *       {
- *         "message": "Spot couldn't be found"
- *       }
- *       ```
- */
-describe("TODO: spot could not be found", TODO);
