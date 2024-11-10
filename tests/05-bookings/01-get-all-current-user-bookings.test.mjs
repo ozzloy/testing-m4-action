@@ -16,6 +16,13 @@ import {
   expectedBookingCurrentSpotKeys,
 } from "../utils/err-helpers.mjs";
 
+import {
+  isDateString,
+  isNumber,
+  isString,
+  TODO,
+} from "../utils/test-utils.mjs";
+
 /**
  * GET /bookings/current
  * response: 200
@@ -124,13 +131,6 @@ describe("get all current user bookings", function () {
     const [booking] = Bookings;
     expect(booking).to.be.an("object");
     expect(booking).to.have.all.keys(expectedBookingCurrentKeys);
-    const isString = (maybeString) =>
-      typeof maybeString === "string" || maybeString instanceof String;
-    const isDateString = (maybeDateString) => {
-      if (!isString(maybeDateString)) return false;
-      const date = new Date(maybeDateString);
-      return date instanceof Date && !isNaN(date);
-    };
     {
       const { id, spotId, userId } = booking;
       expect(
@@ -148,8 +148,6 @@ describe("get all current user bookings", function () {
     expect(Spot).to.be.an("object");
     expect(Spot).to.have.all.keys(expectedBookingCurrentSpotKeys);
 
-    const isNumber = (maybeNumber) =>
-      !isNaN(maybeNumber) && typeof maybeNumber === "number";
     {
       const { id, ownerId } = Spot;
       expect(
@@ -178,28 +176,6 @@ describe("get all current user bookings", function () {
   });
 });
 
-import { fileURLToPath } from "url";
-import { relative } from "path";
-const getFileLine = () => {
-  const err = new Error();
-  const stack = err.stack.split("\n")[5];
-  const match = stack.match(/at\s+(?:\w+\s+)?\(?(.*):(\d+):\d+\)?/);
-
-  const line = match ? parseInt(match[2]) : "unknown";
-  const file = relative(
-    process.cwd(),
-    match
-      ? match[1].startsWith("file://")
-        ? fileURLToPath(match[1])
-        : match[1]
-      : "unknown",
-  );
-  return { file, line };
-};
-const printFileLine = () => {
-  console.log("TODO:", getFileLine());
-};
-
 /**
  * get all bookings for spot which current user does not own
  *   request
@@ -222,10 +198,7 @@ const printFileLine = () => {
  *       }
  *       ```
  */
-describe(
-  "TODO: get all bookings for spot owned by current user",
-  printFileLine,
-);
+describe("TODO: get all bookings for spot owned by current user", TODO);
 
 /**
  * get all bookings for spot which current user owns
@@ -258,10 +231,7 @@ describe(
  *       }
  *       ```
  */
-describe(
-  "TODO: get all bookings for spot owned by current user",
-  printFileLine,
-);
+describe("TODO: get all bookings for spot owned by current user", TODO);
 
 /**
  * get a spot that doesn't exist
@@ -279,4 +249,4 @@ describe(
  *       }
  *       ```
  */
-describe("TODO: spot could not be found", printFileLine);
+describe("TODO: spot could not be found", TODO);
