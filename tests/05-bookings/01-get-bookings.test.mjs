@@ -220,6 +220,10 @@ describe("get all bookings for spot not owned by current user", function () {
   it("has correct endpoint", async function () {
     renter.get(path).expect(200);
   });
+
+  it("rejects unauthentic posers", async function () {
+    nonAuth.get(path).set("X-XSRF-TOKEN", xsrfNonAuth).expect(401);
+  });
 });
 
 /**
