@@ -73,21 +73,22 @@ describe("get all current user bookings", function () {
 });
 
 import { fileURLToPath } from "url";
+import { relative } from "path";
 const getFileLine = () => {
   const err = new Error();
   const stack = err.stack.split("\n")[5];
   // at file:///.../tests/05-bookings/01-get-all-current-user-bookings.test.mjs:91:1
-  const match = stack.match(
-    /at\s+(?:\w+\s+)?\(?(?:.+(\/tests\/.*?)):(\d+):\d+\)?/,
-  );
+  const match = stack.match(/at\s+(?:\w+\s+)?\(?(.*):(\d+):\d+\)?/);
 
   const line = match ? parseInt(match[2]) : "unknown";
-  const file =
-    "." + match
+  const file = relative(
+    process.cwd(),
+    match
       ? match[1].startsWith("file://")
         ? fileURLToPath(match[1])
         : match[1]
-      : "unknown";
+      : "unknown",
+  );
   return { file, line };
 };
 const printFileLine = () => {
