@@ -106,7 +106,7 @@ describe("get all bookings for the current user", function () {
   });
 
   describe("error responses", function () {
-    xit("rejects booking without end date", function (done) {
+    xit("rejects booking with no end date", function (done) {
       const bookingSansEndDate = { startDate: Date.now() };
       renter
         .post("/spots/" + spot.id + "/bookings")
@@ -119,7 +119,7 @@ describe("get all bookings for the current user", function () {
           return done();
         });
     });
-    xit("rejects booking without start date", function (done) {
+    xit("rejects booking with no start date", function (done) {
       const bookingSansStartDate = { endDate: Date.now() };
       renter
         .post("/spots/" + spot.id + "/bookings")
