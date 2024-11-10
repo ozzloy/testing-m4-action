@@ -44,12 +44,12 @@ describe("get all current user bookings", function () {
   /**
      create an owner
    */
-  let owner;
-  let xsrfOwner;
+  let owner, nonAuth;
+  let xsrfOwner, xsrfNonAuth;
   before(async function () {
     this.timeout(15000);
-    [owner] = createManyAgents(apiBaseUrl, 1);
-    [xsrfOwner] = await fetchManyCsrfTokens([owner]);
+    [owner, nonAuth] = createManyAgents(apiBaseUrl, 2);
+    [xsrfOwner, xsrfNonAuth] = await fetchManyCsrfTokens([owner, nonAuth]);
     agentSignUp(owner, xsrfOwner);
   });
 
@@ -58,6 +58,17 @@ describe("get all current user bookings", function () {
       expect(err).to.not.exist;
       done();
     });
+  });
+
+  it("requires authentication", function (done) {
+    nonAuth
+      .get("/bookings/current")
+      .set("X-XSRF-TOKEN", xsrfNonAuth)
+      .expect(401)
+      .end(function (err, res) {
+        if (err) return done(err);
+        return done();
+      });
   });
 });
 
