@@ -218,7 +218,7 @@ describe("get all bookings for spot not owned by current user", function () {
     path = "/spots/" + spot.id + "/bookings";
   });
 
-  it("has correct endpoint", async function () {
+  it("has correct endpoint, and status 200", async function () {
     renter.get(path).expect(200);
   });
 
