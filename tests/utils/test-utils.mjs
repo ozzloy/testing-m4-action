@@ -31,5 +31,5 @@ const getFileLine = () => {
 };
 
 export const TODO = () => {
-  console.log("TODO: finish test", getFileLine());
+  console.log("TODO: finish test", JSON.stringify(getFileLine(), null, 2));
 };
