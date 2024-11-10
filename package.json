@@ -9,7 +9,8 @@
     "test-spots": "dotenv mocha './tests/02-spots/**/*.test.mjs'",
     "test-reviews": "dotenv mocha './tests/03-reviews/**/*.test.mjs'",
     "test-images": "dotenv mocha './tests/04-delete-images-q-params/**/*.test.mjs'",
-    "test-bookings": "dotenv mocha './tests/05-bookings/**/*.test.mjs'"
+    "test-bookings": "dotenv mocha './tests/05-bookings/**/*.test.mjs'",
+    "latest": "dotenv mocha './tests/05-bookings/01-get-all-current-user-bookings.test.mjs' --grep \"^get all current user bookings\""
   },
   "keywords": [],
   "author": "",
