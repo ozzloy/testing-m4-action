@@ -95,3 +95,9 @@ export const expectedBookingCurrentSpotKeys = [
   "price",
   "previewImage",
 ];
+
+export const expectedBookingBySpotNonOwnerKeys = [
+  "spotId",
+  "startDate",
+  "endDate",
+];

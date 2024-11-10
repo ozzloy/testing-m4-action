@@ -12,6 +12,7 @@ import {
 import { createUniqueBooking } from "../utils/agent-helpers.mjs";
 import { apiBaseUrl } from "../utils/constants.mjs";
 import {
+  expectedBookingBySpotNonOwnerKeys,
   expectedBookingCurrentKeys,
   expectedBookingCurrentSpotKeys,
 } from "../utils/err-helpers.mjs";
@@ -223,6 +224,36 @@ describe("get all bookings for spot not owned by current user", function () {
 
   it("rejects unauthentic posers", async function () {
     nonAuth.get(path).set("X-XSRF-TOKEN", xsrfNonAuth).expect(401);
+  });
+
+  it("returns a body with valid booking", async function () {
+    const bookingDetails = createUniqueBooking();
+    bookingDetails.spot = spot;
+    const bookingResponse = await agentCreateBooking(
+      renter,
+      xsrfRenter,
+      bookingDetails,
+    );
+    const res = await renter
+      .get(path)
+      .expect(200)
+      .set("Accept", "application/json")
+      .set("X-XSRF-TOKEN", xsrfRenter)
+      .expect("Content-Type", /application\/json/);
+    const { body } = res;
+    expect(body).to.have.property("Bookings").that.is.an("array");
+    const { Bookings } = body;
+    expect(Bookings).to.not.be.empty;
+    const [booking] = Bookings;
+    expect(booking).to.be.an("object");
+    expect(booking).to.have.all.keys(expectedBookingBySpotNonOwnerKeys);
+    const { spotId, startDate, endDate } = booking;
+    expect(
+      [startDate, endDate].every(isDateString),
+      "booking's startDate and endDate should be dates",
+    ).to.be.true;
+    expect(isInteger(spotId), "booking's spotId should be an integer").to.be
+      .true;
   });
 });
 
