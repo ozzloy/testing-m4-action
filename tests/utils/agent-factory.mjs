@@ -126,9 +126,9 @@ export async function agentCreateBooking(agent, xsrfToken, bookingDetails) {
       .set("Accept", "application/json")
       .set("X-XSRF-TOKEN", xsrfToken)
       .expect((response) => expect(response.status).to.be.oneOf([200, 201]));
-    return response;
+    return response.body;
   } catch (e) {
     console.log(e);
-    assert(!e, "Could not test this route because the 'Create a Booking'");
+    assert(!e, "failed to create booking");
   }
 }

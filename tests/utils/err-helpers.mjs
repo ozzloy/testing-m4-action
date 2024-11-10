@@ -70,3 +70,28 @@ export const expectedBookingKeys = [
   "createdAt",
   "updatedAt",
 ];
+
+export const expectedBookingCurrentKeys = [
+  "id",
+  "spotId",
+  "Spot",
+  "userId",
+  "startDate",
+  "endDate",
+  "createdAt",
+  "updatedAt",
+];
+
+export const expectedBookingCurrentSpotKeys = [
+  "id",
+  "ownerId",
+  "address",
+  "city",
+  "state",
+  "country",
+  "lat",
+  "lng",
+  "name",
+  "price",
+  "previewImage",
+];

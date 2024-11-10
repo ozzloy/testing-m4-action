@@ -1,14 +1,20 @@
 import { assert, expect } from "chai";
 
-import { apiBaseUrl } from "../utils/constants.mjs";
-
 import {
+  agentCreateBooking,
+  agentCreateSpot,
   agentSignUp,
   createAgent,
   createManyAgents,
   fetchCsrfToken,
   fetchManyCsrfTokens,
 } from "../utils/agent-factory.mjs";
+import { createUniqueBooking } from "../utils/agent-helpers.mjs";
+import { apiBaseUrl } from "../utils/constants.mjs";
+import {
+  expectedBookingCurrentKeys,
+  expectedBookingCurrentSpotKeys,
+} from "../utils/err-helpers.mjs";
 
 /**
  * GET /bookings/current
@@ -46,13 +52,20 @@ describe("get all current user bookings", function () {
   /**
      create an owner
    */
-  let owner, nonAuth;
-  let xsrfOwner, xsrfNonAuth;
+  let owner, renter, nonAuth;
+  let xsrfOwner, xsrfRenter, xsrfNonAuth;
+  let spot;
   before(async function () {
     this.timeout(15000);
-    [owner, nonAuth] = createManyAgents(apiBaseUrl, 2);
-    [xsrfOwner, xsrfNonAuth] = await fetchManyCsrfTokens([owner, nonAuth]);
+    [owner, renter, nonAuth] = createManyAgents(apiBaseUrl, 3);
+    [xsrfOwner, xsrfRenter, xsrfNonAuth] = await fetchManyCsrfTokens([
+      owner,
+      renter,
+      nonAuth,
+    ]);
     await agentSignUp(owner, xsrfOwner);
+    await agentSignUp(renter, xsrfRenter);
+    spot = (await agentCreateSpot(owner, xsrfOwner)).body;
   });
 
   it("has correct endpoint", function (done) {
@@ -88,6 +101,80 @@ describe("get all current user bookings", function () {
     expect(body).to.have.property("Bookings").that.is.an("array");
     const { Bookings } = body;
     expect(Bookings).to.be.empty;
+  });
+
+  it("returns a body with a valid booking", async function () {
+    const bookingDetails = createUniqueBooking();
+    bookingDetails.spot = spot;
+    const bookingResponse = await agentCreateBooking(
+      renter,
+      xsrfRenter,
+      bookingDetails,
+    );
+    const res = await renter
+      .get("/bookings/current")
+      .expect(200)
+      .set("Accept", "application/json")
+      .set("X-XSRF-TOKEN", xsrfRenter)
+      .expect("Content-Type", /application\/json/);
+    const { body } = res;
+    expect(body).to.have.property("Bookings").that.is.an("array");
+    const { Bookings } = body;
+    expect(Bookings).to.not.be.empty;
+    const [booking] = Bookings;
+    expect(booking).to.be.an("object");
+    expect(booking).to.have.all.keys(expectedBookingCurrentKeys);
+    const isString = (maybeString) =>
+      typeof maybeString === "string" || maybeString instanceof String;
+    const isDateString = (maybeDateString) => {
+      if (!isString(maybeDateString)) return false;
+      const date = new Date(maybeDateString);
+      return date instanceof Date && !isNaN(date);
+    };
+    {
+      const { id, spotId, userId } = booking;
+      expect(
+        [id, spotId, userId].every(Number.isInteger),
+        "booking's id, spotId, and userId should be integers",
+      ).to.be.true;
+      const { startDate, endDate, createdAt, updatedAt } = booking;
+      expect(
+        [startDate, endDate, createdAt, updatedAt].every(isDateString),
+        "booking's startDate, endDate, createdAt, and updatedAt should be dates",
+      ).to.be.true;
+    }
+
+    const { Spot } = booking;
+    expect(Spot).to.be.an("object");
+    expect(Spot).to.have.all.keys(expectedBookingCurrentSpotKeys);
+
+    const isNumber = (maybeNumber) =>
+      !isNaN(maybeNumber) && typeof maybeNumber === "number";
+    {
+      const { id, ownerId } = Spot;
+      expect(
+        [id, ownerId].every(Number.isInteger),
+        "Spot's id and ownerId should be integers",
+      ).to.be.true;
+
+      const { lat, lng, price } = Spot;
+      expect(
+        [lat, lng, price].every(isNumber),
+        "Spot's lat, lng, and price should be numbers",
+      ).to.be.true;
+
+      const { address, city, state, country, name } = Spot;
+      expect(
+        [address, city, state, country].every(isString),
+        "Spot's address, city, state, country, and name should be strings",
+      ).to.be.true;
+
+      const { previewImage } = Spot;
+      expect(
+        typeof previewImage === "string" || previewImage === null,
+        "Spot's previewImage should be null or string",
+      ).to.be.true;
+    }
   });
 });
 

@@ -2,7 +2,6 @@ import { assert, expect } from "chai";
 
 import {
   agentCreateSpot,
-  agentCreateBooking,
   agentSignUp,
   createManyAgents,
   fetchManyCsrfTokens,
