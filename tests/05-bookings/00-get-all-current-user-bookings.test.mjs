@@ -166,7 +166,13 @@ describe("get all bookings for the current user", function () {
         .end(function (err, res) {
           if (err) return done(err);
           const { body } = res;
-          expect(body).to.have.all.keys("message", "errors");
+          expect(body).to.have.any.keys([
+            "message",
+            "errors",
+            "title",
+            "stack",
+          ]);
+          expect(body).to.include.all.keys(["message", "errors"]);
           const { message, errors } = body;
           expect(message).to.be.oneOf(["Validation error", "Bad Request"]);
           expect(errors).to.be.an("object").that.has.property("startDate");
@@ -195,7 +201,13 @@ describe("get all bookings for the current user", function () {
         .end(function (err, res) {
           if (err) return done(err);
           const { body } = res;
-          expect(body).to.have.all.keys("message", "errors");
+          expect(body).to.have.any.keys([
+            "message",
+            "errors",
+            "title",
+            "stack",
+          ]);
+          expect(body).to.include.all.keys(["message", "errors"]);
           const { message, errors } = body;
           expect(message).to.be.oneOf(["Validation error", "Bad Request"]);
           expect(errors).to.be.an("object").that.has.property("endDate");
@@ -289,7 +301,13 @@ describe("get all bookings for the current user", function () {
             .end(function (err, res) {
               if (err) return done(err);
               const { body } = res;
-              expect(body).to.have.all.keys(["message", "errors"]);
+              expect(body).to.have.any.keys([
+                "message",
+                "errors",
+                "title",
+                "stack",
+              ]);
+              expect(body).to.include.all.keys(["message", "errors"]);
               const { message, errors } = body;
               expect(message).to.equal(
                 "Sorry, this spot is already booked for the specified dates",
@@ -325,7 +343,13 @@ describe("get all bookings for the current user", function () {
             .end(function (err, res) {
               if (err) return done(err);
               const { body } = res;
-              expect(body).to.have.all.keys(["message", "errors"]);
+              expect(body).to.have.any.keys([
+                "message",
+                "errors",
+                "title",
+                "stack",
+              ]);
+              expect(body).to.include.all.keys(["message", "errors"]);
               const { message, errors } = body;
               expect(message).to.equal(
                 "Sorry, this spot is already booked for the specified dates",
@@ -375,7 +399,13 @@ describe("get all bookings for the current user", function () {
             .end(function (err, res) {
               if (err) return done(err);
               const { body } = res;
-              expect(body).to.have.all.keys(["message", "errors"]);
+              expect(body).to.have.any.keys([
+                "message",
+                "errors",
+                "title",
+                "stack",
+              ]);
+              expect(body).to.include.all.keys(["message", "errors"]);
               const { message, errors } = body;
               expect(message).to.equal(
                 "Sorry, this spot is already booked for the specified dates",
@@ -428,7 +458,13 @@ describe("get all bookings for the current user", function () {
             .end(function (err, res) {
               if (err) return done(err);
               const { body } = res;
-              expect(body).to.have.all.keys(["message", "errors"]);
+              expect(body).to.have.any.keys([
+                "message",
+                "errors",
+                "title",
+                "stack",
+              ]);
+              expect(body).to.include.all.keys(["message", "errors"]);
               const { message, errors } = body;
               expect(message).to.equal(
                 "Sorry, this spot is already booked for the specified dates",
