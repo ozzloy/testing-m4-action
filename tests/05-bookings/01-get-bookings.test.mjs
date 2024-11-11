@@ -141,6 +141,7 @@ describe("get all current user bookings", function () {
         [id, spotId, userId].every(isInteger),
         "booking's id, spotId, and userId should be integers",
       ).to.be.true;
+      expect(spotId).to.equal(spot.id);
       const { startDate, endDate, createdAt, updatedAt } = booking;
       expect(
         [startDate, endDate, createdAt, updatedAt].every(isDateString),
@@ -158,12 +159,19 @@ describe("get all current user bookings", function () {
         [id, ownerId].every(isInteger),
         "Spot's id and ownerId should be integers",
       ).to.be.true;
+      expect(id).to.equal(spot.id);
+      //TODO: check if ownerId matches owner's id
+      //      not sure how to figure out owner agent's id
+      //expect(ownerId).to.equal(owner.id);
 
       const { lat, lng, price } = Spot;
       expect(
         [lat, lng, price].every(isNumber),
         "Spot's lat, lng, and price should be numbers",
       ).to.be.true;
+      expect(lat).to.equal(spot.lat);
+      expect(lng).to.equal(spot.lng);
+      expect(price).to.equal(spot.price);
 
       const { address, city, state, country, name } = Spot;
       expect(
@@ -254,6 +262,7 @@ describe("get all bookings by spot", function () {
       ).to.be.true;
       expect(isInteger(spotId), "booking's spotId should be an integer").to.be
         .true;
+      expect(spotId).to.equal(spot.id);
     });
   });
 
@@ -312,6 +321,7 @@ describe("get all bookings by spot", function () {
           [id, spotId, userId].every(isInteger),
           "owned spot's booking's id, spotId, and userId should be integers",
         ).to.be.true;
+        expect(spotId).to.equal(spot.id);
       }
       const { startDate, endDate, createdAt, updatedAt } = booking;
       expect(
@@ -329,6 +339,7 @@ describe("get all bookings by spot", function () {
           [firstName, lastName].every(isString),
           "booking's user's first and last names should be strings",
         ).to.be.true;
+        expect(id).to.equal(booking.userId);
       }
     });
   });
