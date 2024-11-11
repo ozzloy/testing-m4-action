@@ -13,8 +13,10 @@ import { createUniqueBooking } from "../utils/agent-helpers.mjs";
 import { apiBaseUrl } from "../utils/constants.mjs";
 import {
   expectedBookingBySpotNonOwnerKeys,
+  expectedBookingBySpotOwnerKeys,
   expectedBookingCurrentKeys,
   expectedBookingCurrentSpotKeys,
+  expectedSpotBookingUserKeys,
 } from "../utils/err-helpers.mjs";
 
 import {
@@ -290,7 +292,50 @@ describe("get all bookings by spot", function () {
    *       }
    *       ```
    */
-  describe("TODO: spot owned by current user", TODO);
+  describe("spot owned by current user", function () {
+    it("returns a body with valid booking", async function () {
+      const bookingDetails = createUniqueBooking();
+      bookingDetails.spot = spot;
+      await agentCreateBooking(renter, xsrfRenter, bookingDetails);
+      const res = await owner
+        .get(path)
+        .expect(200)
+        .set("Accept", "application/json")
+        .set("X-XSRF-TOKEN", xsrfRenter)
+        .expect("Content-Type", /application\/json/);
+      const { body } = res;
+      expect(body).to.have.property("Bookings").that.is.an("array");
+      const { Bookings } = body;
+      expect(Bookings).to.not.be.empty;
+      const [booking] = Bookings;
+      expect(booking).to.be.an("object");
+      expect(booking).to.have.all.keys(expectedBookingBySpotOwnerKeys);
+      {
+        const { id, spotId, userId } = booking;
+        expect(
+          [id, spotId, userId].every(isInteger),
+          "owned spot's booking's id, spotId, and userId should be integers",
+        ).to.be.true;
+      }
+      const { startDate, endDate, createdAt, updatedAt } = booking;
+      expect(
+        [startDate, endDate, createdAt, updatedAt].every(isDateString),
+        "booking's startDate, endDate, createdAt, and updatedAt should be dates",
+      ).to.be.true;
+      expect(booking.User).to.be.an("object");
+      const { User } = booking;
+      {
+        expect(User).to.have.all.keys(expectedSpotBookingUserKeys);
+        const { id, firstName, lastName } = User;
+        expect(isInteger(id), "booking's user's id should be an integer").to.be
+          .true;
+        expect(
+          [firstName, lastName].every(isString),
+          "booking's user's first and last names should be strings",
+        ).to.be.true;
+      }
+    });
+  });
 
   /**
    * get a spot that doesn't exist
