@@ -33,3 +33,5 @@ const getFileLine = () => {
 export const TODO = () => {
   console.log("TODO: finish test", JSON.stringify(getFileLine(), null, 2));
 };
+
+export const isInteger = Number.isInteger;

@@ -19,6 +19,7 @@ import {
 
 import {
   isDateString,
+  isInteger,
   isNumber,
   isString,
   TODO,
@@ -135,7 +136,7 @@ describe("get all current user bookings", function () {
     {
       const { id, spotId, userId } = booking;
       expect(
-        [id, spotId, userId].every(Number.isInteger),
+        [id, spotId, userId].every(isInteger),
         "booking's id, spotId, and userId should be integers",
       ).to.be.true;
       const { startDate, endDate, createdAt, updatedAt } = booking;
@@ -152,7 +153,7 @@ describe("get all current user bookings", function () {
     {
       const { id, ownerId } = Spot;
       expect(
-        [id, ownerId].every(Number.isInteger),
+        [id, ownerId].every(isInteger),
         "Spot's id and ownerId should be integers",
       ).to.be.true;
 
@@ -253,8 +254,8 @@ describe("get all bookings by spot", function () {
         [startDate, endDate].every(isDateString),
         "booking's startDate and endDate should be dates",
       ).to.be.true;
-      expect(Number.isInteger(spotId), "booking's spotId should be an integer")
-        .to.be.true;
+      expect(isInteger(spotId), "booking's spotId should be an integer").to.be
+        .true;
     });
   });
 
