@@ -12,6 +12,10 @@ import { createUniqueBooking } from "../utils/agent-helpers.mjs";
 
 import { apiBaseUrl } from "../utils/constants.mjs";
 
+import { expectedUpdatedBookingKeys } from "../utils/err-helpers.mjs";
+
+import { isDateString, isInteger } from "../utils/test-utils.mjs";
+
 /**
  * update and return an existing booking
  *   request:
@@ -84,6 +88,40 @@ describe("edit an existing booking", function () {
     const poser = createAgent(apiBaseUrl);
     const xsrfPoser = await fetchCsrfToken(poser);
     poser.put(path).set("X-XSRF-TOKEN", xsrfPoser).expect(401);
+  });
+
+  it("returns an updated booking body", async function () {
+    const updatedBookingDetails = createUniqueBooking();
+    const updatedBooking = (
+      await renter
+        .put(path)
+
+        .set("X-XSRF-TOKEN", xsrfRenter)
+        .set("Accept", "application/json")
+        .send(updatedBookingDetails)
+        .expect(200)
+    ).body;
+    expect(updatedBooking).to.have.all.keys(expectedUpdatedBookingKeys);
+    const { id, spotId, userId } = updatedBooking;
+    expect(isInteger(id), "new booking's id should be an integer").to.be.true;
+    expect(isInteger(spotId), "new booking's spotId should be an integer").to.be
+      .true;
+    expect(isInteger(userId), "new booking's userId should be an integer").to.be
+      .true;
+    expect(id).to.equal(booking.id);
+    expect(spotId).to.equal(booking.spotId);
+    expect(userId).to.equal(booking.userId);
+
+    const { startDate, endDate, createdAt, updatedAt } = updatedBooking;
+    expect(isDateString(startDate), "updated booking's startDate should a date")
+      .to.be.equal;
+    expect(isDateString(endDate), "updated booking's endDate should a date").to
+      .be.equal;
+    expect(isDateString(createdAt), "updated booking's createdAt should a date")
+      .to.be.equal;
+    expect(isDateString(updatedAt), "updated booking's updatedAt should a date")
+      .to.be.equal;
+    console.log("endDate", JSON.stringify(endDate, null, 2));
   });
 });
 

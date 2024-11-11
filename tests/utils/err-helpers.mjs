@@ -114,3 +114,13 @@ export const expectedBookingBySpotOwnerKeys = [
 ];
 
 export const expectedSpotBookingUserKeys = ["id", "firstName", "lastName"];
+
+export const expectedUpdatedBookingKeys = [
+  "id",
+  "spotId",
+  "userId",
+  "startDate",
+  "endDate",
+  "createdAt",
+  "updatedAt",
+];
