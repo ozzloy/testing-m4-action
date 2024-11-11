@@ -295,10 +295,10 @@ describe("get all bookings by spot", function () {
       await agentCreateBooking(renter, xsrfRenter, bookingDetails);
       const res = await owner
         .get(path)
-        .expect(200)
         .set("Accept", "application/json")
         .set("X-XSRF-TOKEN", xsrfRenter)
-        .expect("Content-Type", /application\/json/);
+        .expect("Content-Type", /application\/json/)
+        .expect(200);
       const { body } = res;
       expect(body).to.have.property("Bookings").that.is.an("array");
       const { Bookings } = body;
@@ -349,5 +349,18 @@ describe("get all bookings by spot", function () {
    *       }
    *       ```
    */
-  describe("TODO: spot could not be found", TODO);
+  describe("spot could not be found", function () {
+    it("responds with 404 when spot cannot be found", async function () {
+      const res = await renter
+        .get("/spots/0/bookings")
+        .set("Accept", "application/json")
+        .set("X-XSRF-TOKEN", xsrfRenter)
+        .expect("Content-Type", /application\/json/)
+        .expect(404);
+      const { body } = res;
+      expect(body).to.have.property("message").that.is.a("string");
+      const { message } = body;
+      expect(message).to.equal("Spot couldn't be found");
+    });
+  });
 });
