@@ -233,11 +233,7 @@ describe("get all bookings by spot", function () {
     it("returns a body with valid booking", async function () {
       const bookingDetails = createUniqueBooking();
       bookingDetails.spot = spot;
-      const bookingResponse = await agentCreateBooking(
-        renter,
-        xsrfRenter,
-        bookingDetails,
-      );
+      await agentCreateBooking(renter, xsrfRenter, bookingDetails);
       const res = await renter
         .get(path)
         .expect(200)
