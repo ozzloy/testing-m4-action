@@ -4,13 +4,14 @@
   "description": "## Comprehensive Testing Suite for the M4 API Project",
   "type": "module",
   "scripts": {
-    "test": "dotenv mocha ./tests/**/*.test.mjs",
-    "test-auth": "dotenv mocha './tests/01-auth/**/*.test.mjs'",
-    "test-spots": "dotenv mocha './tests/02-spots/**/*.test.mjs'",
-    "test-reviews": "dotenv mocha './tests/03-reviews/**/*.test.mjs'",
-    "test-images": "dotenv mocha './tests/04-delete-images-q-params/**/*.test.mjs'",
-    "test-bookings": "dotenv mocha './tests/05-bookings/**/*.test.mjs'",
-    "latest": "dotenv -- mocha './tests/05-bookings/01-get-bookings.test.mjs' --grep 'spot not owned by current user'"
+    "test-all": "dotenv -- mocha ./tests/**/*.test.mjs",
+    "test": "dotenv -- mocha --bail ./tests/**/*.test.mjs",
+    "test-auth": "dotenv -- mocha --bail './tests/01-auth/**/*.test.mjs'",
+    "test-spots": "dotenv -- mocha --bail './tests/02-spots/**/*.test.mjs'",
+    "test-reviews": "dotenv -- mocha --bail './tests/03-reviews/**/*.test.mjs'",
+    "test-images": "dotenv -- mocha --bail './tests/04-delete-images-q-params/**/*.test.mjs'",
+    "test-bookings": "dotenv -- mocha --bail './tests/05-bookings/**/*.test.mjs'",
+    "latest": "dotenv -- mocha --bail './tests/05-bookings/02-edit-bookings.test.mjs' --grep 'edit an existing booking'"
   },
   "keywords": [],
   "author": "",

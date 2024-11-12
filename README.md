@@ -18,13 +18,16 @@ API_URL="http://localhost:5001/api"
 # API_URL="https://example-slug.onrender.com/api"
 ```
 
-- Run: `npm test`.
-- or one of the following
-  - `npm run test-auth`
-  - `npm run test-spots`
-  - `npm run test-reviews`
-  - `npm run test-images`
-  - `npm run test-bookings`
+- run tests, stop at the first failing test
+  - Run: `npm test`
+  - or one of the following
+    - `npm run test-auth`
+    - `npm run test-spots`
+    - `npm run test-reviews`
+    - `npm run test-images`
+    - `npm run test-bookings`
+- to run all tests
+  - run: `npm run test-all`
 
 ## Running the Tests
 
