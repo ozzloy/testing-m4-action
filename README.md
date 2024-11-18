@@ -28,6 +28,9 @@ API_URL="http://localhost:5001/api"
     - `npm run test-reviews`
     - `npm run test-images`
     - `npm run test-bookings`
+- to run the grader
+  - run: `npm run autograde`
+  - this runs everything but the bookings tests
 - to run all tests
   - run: `npm run test-all`
 
