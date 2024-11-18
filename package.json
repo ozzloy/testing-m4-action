@@ -4,6 +4,7 @@
   "description": "## Comprehensive Testing Suite for the M4 API Project",
   "type": "module",
   "scripts": {
+    "autograde": "dotenv -- mocha './tests/**/*.test.mjs' --exclude './tests/05-bookings/**/*.test.mjs'",
     "test-all": "dotenv -- mocha ./tests/**/*.test.mjs",
     "test": "dotenv -- mocha --bail ./tests/**/*.test.mjs",
     "test-auth": "dotenv -- mocha --bail './tests/01-auth/**/*.test.mjs'",
