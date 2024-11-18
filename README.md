@@ -4,6 +4,8 @@ This repo contains a test suite for the M4 project. It is meant to
 streamline assessing your project and act as an alternative to the
 Comprehensive Test Collection in Postman.
 
+Test a local server, or one deployed on render.com
+
 ## Quick Start
 
 - Clone this repo and cd into this directory.
@@ -33,8 +35,8 @@ API_URL="http://localhost:5001/api"
 
 To get the tests working, ensure you've configuired the following:
 
-- Update the base url to point to your live site on Render or your local
-  server.
+- Update the base url to point to your live site on Render or your
+  local server.
 - Ensure your server is running, or your live site is up and running.
 - [`test/utils/constants`](./tests/utils/constants.mjs) is the only
   place you'll need to make a change.
@@ -45,5 +47,5 @@ Use `npm test` to run all of the tests. The test results will map
 ## Bug Reporting
 
 This test suite is an early release, so please report any bugs or
-inconsitencies you find by throwing a comment in our `questions` channel
-on Discord 🙏
+inconsistencies you find by throwing a comment in our `questions`
+channel on Discord 🙏
